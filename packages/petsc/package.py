@@ -1,11 +1,11 @@
-# Copyright 2013-2020 Lawrence Livermore National Security, LLC and other
+# Copyright 2013-2021 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 import os
 
 
-class FiredrakePetsc(Package):
+class Petsc(Package):
     """PETSc is a suite of data structures and routines for the scalable
     (parallel) solution of scientific applications modeled by partial
     differential equations.
@@ -13,12 +13,15 @@ class FiredrakePetsc(Package):
 
     homepage = "http://www.mcs.anl.gov/petsc/index.html"
     url = "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.13.1.tar.gz"
-    git = "https://github.com/firedrakeproject/petsc"
-    maintainers = []
+    git = "https://gitlab.com/petsc/petsc.git"
+    maintainers = ['balay', 'barrysmith', 'jedbrown']
 
-    version('develop', branch='firedrake', preferred=True)
+    version('main', git='https://github.com/firedrakeproject/petsc', branch='firedrake')
     version('xsdk-0.2.0', tag='xsdk-0.2.0')
 
+    version('3.14.4', sha256='b030969816e02c251a6d010c07a90b69ade44932f9ddfac3090ff5e95ab97d5c')
+    version('3.14.3', sha256='63ed7e3440f2bbc732a6c44aa878364f88f5016ab375d9b36d742893a049053d')
+    version('3.14.2', sha256='87a04fd05cac20a2ec47094b7d18b96e0651257d8c768ced2ef7db270ecfb9cb')
     version('3.14.1', sha256='0b4681165a9af96594c794b97ac6993452ec902726679f6b50bb450f89d230ed')
     version('3.14.0', sha256='a8f9caba03e0d57d8452c08505cf96be5f6949adaa266e819382162c03ddb9c5')
     version('3.13.6', sha256='67ca2cf3040d08fdc51d27f660ea3157732b24c2f47aae1b19d63f62a39842c2')
@@ -78,18 +81,22 @@ class FiredrakePetsc(Package):
 
     variant('metis',   default=True,
             description='Activates support for metis and parmetis')
+    variant('ptscotch',   default=False,
+            description='Activates support for PTScotch (only parallel)')
     variant('hdf5',    default=True,
             description='Activates support for HDF5 (only parallel)')
     variant('hypre',   default=True,
             description='Activates support for Hypre (only parallel)')
     # Mumps is disabled by default, because it depends on Scalapack
     # which is not portable to all HPC systems
-    variant('mumps',   default=True,
+    variant('mumps',   default=False,
             description='Activates support for MUMPS (only parallel)')
     variant('superlu-dist', default=True,
             description='Activates support for SuperluDist (only parallel)')
     variant('trilinos', default=False,
             description='Activates support for Trilinos (only parallel)')
+    variant('mkl-pardiso', default=False,
+            description='Activates support for MKL Pardiso')
     variant('int64', default=False,
             description='Compile with 64bit indices')
     variant('clanguage', default='C', values=('C', 'C++'),
@@ -131,14 +138,6 @@ class FiredrakePetsc(Package):
             description='Activates support for Saws')
     variant('libyaml', default=False,
             description='Activates support for YAML')
-    variant('eigen', default=True,
-            description='Activates support for Eigen')
-    variant('ptscotch', default=True,
-            description='Activates support for PTScotch')
-    variant('chaco', default=True,
-            description='Activates support for Chaco')
-
-    provides('petsc')
 
     # 3.8.0 has a build issue with MKL - so list this conflict explicitly
     conflicts('^intel-mkl', when='@3.8.0')
@@ -153,6 +152,7 @@ class FiredrakePetsc(Package):
     conflicts('+moab', when='~mpi', msg=mpi_msg)
     conflicts('+mumps', when='~mpi', msg=mpi_msg)
     conflicts('+p4est', when='~mpi', msg=mpi_msg)
+    conflicts('+ptscotch', when='~mpi', msg=mpi_msg)
     conflicts('+superlu-dist', when='~mpi', msg=mpi_msg)
     conflicts('+trilinos', when='~mpi', msg=mpi_msg)
 
@@ -176,7 +176,7 @@ class FiredrakePetsc(Package):
 
     # Virtual dependencies
     # Git repository needs sowing to build Fortran interface
-    depends_on('sowing', when='@develop')
+    depends_on('sowing', when='@main')
     depends_on('sowing@1.1.23-p1', when='@xsdk-0.2.0')
 
     # PETSc, hypre, superlu_dist when built with int64 use 32 bit integers
@@ -188,7 +188,7 @@ class FiredrakePetsc(Package):
 
     # Build dependencies
     depends_on('python@2.6:2.8', type='build', when='@:3.10.99')
-    depends_on('python@2.6:2.8,3.6:', type='build', when='@3.11:')
+    depends_on('python@2.6:2.8,3.4:', type='build', when='@3.11:')
 
     # Other dependencies
     depends_on('metis@5:~int64+real64', when='@:3.7.99+metis~int64+double')
@@ -199,14 +199,20 @@ class FiredrakePetsc(Package):
     depends_on('metis@5:~int64', when='@3.8:+metis~int64')
     depends_on('metis@5:+int64', when='@3.8:+metis+int64')
 
+    # PTScotch: Currently disable Parmetis wrapper, this means
+    # nested disection won't be available thought PTScotch
+    depends_on('scotch+esmumps~metis+mpi', when='+ptscotch')
+    depends_on('scotch+int64', when='+ptscotch+int64')
+
     depends_on('hdf5@:1.10.99+mpi', when='@:3.12.99+hdf5+mpi')
-    depends_on('hdf5@1.12.0:+mpi', when='@3.13:+hdf5+mpi')
-    depends_on('hdf5@1.12.0:+mpi', when='+exodusii+mpi')
-    depends_on('hdf5@1.12.0:+mpi', when='+cgns+mpi')
+    depends_on('hdf5+mpi', when='@3.13:+hdf5+mpi')
+    depends_on('hdf5+mpi', when='+exodusii+mpi')
+    depends_on('hdf5+mpi', when='+cgns+mpi')
     depends_on('zlib', when='+hdf5')
     depends_on('zlib', when='+libpng')
     depends_on('zlib', when='+p4est')
-    depends_on('parmetis', when='+metis+mpi')
+    depends_on('parmetis+int64', when='+metis+mpi+int64')
+    depends_on('parmetis~int64', when='+metis+mpi~int64')
     depends_on('valgrind', when='+valgrind')
     # Hypre does not support complex numbers.
     # Also PETSc prefer to build it without internal superlu, likely due to
@@ -220,8 +226,8 @@ class FiredrakePetsc(Package):
     depends_on('hypre@2.14:+mpi~internal-superlu+int64', when='@3.14:+hypre+mpi~complex+int64')
     depends_on('hypre@xsdk-0.2.0+mpi~internal-superlu+int64', when='@xsdk-0.2.0+hypre+mpi~complex+int64')
     depends_on('hypre@xsdk-0.2.0+mpi~internal-superlu~int64', when='@xsdk-0.2.0+hypre+mpi~complex~int64')
-    depends_on('hypre@develop+mpi~internal-superlu+int64', when='@develop+hypre+mpi~complex+int64')
-    depends_on('hypre@develop+mpi~internal-superlu~int64', when='@develop+hypre+mpi~complex~int64')
+    depends_on('hypre@develop+mpi~internal-superlu+int64', when='@main+hypre+mpi~complex+int64')
+    depends_on('hypre@develop+mpi~internal-superlu~int64', when='@main+hypre+mpi~complex~int64')
     depends_on('superlu-dist@:4.3~int64', when='@3.4.4:3.6.4+superlu-dist+mpi~int64')
     depends_on('superlu-dist@:4.3+int64', when='@3.4.4:3.6.4+superlu-dist+mpi+int64')
     depends_on('superlu-dist@5.0.0:5.1.3~int64', when='@3.7:3.7.99+superlu-dist+mpi~int64')
@@ -236,13 +242,14 @@ class FiredrakePetsc(Package):
     depends_on('superlu-dist@6.1:+int64', when='@3.13.0:+superlu-dist+mpi+int64')
     depends_on('superlu-dist@xsdk-0.2.0~int64', when='@xsdk-0.2.0+superlu-dist+mpi~int64')
     depends_on('superlu-dist@xsdk-0.2.0+int64', when='@xsdk-0.2.0+superlu-dist+mpi+int64')
-    depends_on('superlu-dist@develop~int64', when='@develop+superlu-dist+mpi~int64')
-    depends_on('superlu-dist@develop+int64', when='@develop+superlu-dist+mpi+int64')
+    depends_on('superlu-dist@develop~int64', when='@main+superlu-dist+mpi~int64')
+    depends_on('superlu-dist@develop+int64', when='@main+superlu-dist+mpi+int64')
     depends_on('mumps+mpi~int64', when='+mumps')
     depends_on('scalapack', when='+mumps')
     depends_on('trilinos@12.6.2:+mpi', when='@3.7.0:+trilinos+mpi')
     depends_on('trilinos@xsdk-0.2.0+mpi', when='@xsdk-0.2.0+trilinos+mpi')
-    depends_on('trilinos@develop+mpi', when='@xdevelop+trilinos+mpi')
+    depends_on('trilinos@develop+mpi', when='@main+trilinos+mpi')
+    depends_on('mkl', when='+mkl-pardiso')
     depends_on('fftw+mpi', when='+fftw+mpi')
     depends_on('suite-sparse', when='+suite-sparse')
     depends_on('libx11', when='+X')
@@ -261,11 +268,6 @@ class FiredrakePetsc(Package):
     depends_on('p4est+mpi', when='+p4est+mpi')
     depends_on('saws', when='+saws')
     depends_on('libyaml', when='+libyaml')
-    depends_on('eigen', when='+eigen')
-    depends_on('scotch', when='+scotch')
-    depends_on('mumps+ptscotch+mpi~int64', when='+mumps+scotch')
-    depends_on('scotch+esmumps', when='+mumps+scotch')
-    depends_on('petsc-chaco', when='+chaco')
 
     def url_for_version(self, version):
         if version >= Version('3.13.0'):
@@ -369,8 +371,7 @@ class FiredrakePetsc(Package):
                         'trilinos', 'fftw', 'valgrind', 'gmp', 'libpng',
                         'giflib', 'mpfr', 'netcdf-c', 'parallel-netcdf',
                         'moab', 'random123', 'exodusii', 'cgns', 'memkind',
-                        'p4est', 'saws', 'libyaml', 'eigen', 'scotch',
-                        'petsc-chaco', jpeg_library):
+                        'p4est', 'saws', 'libyaml', jpeg_library):
             # Cannot check `library in spec` because of transitive deps
             # Cannot check variants because parmetis keys on +metis
             library_requested = library in spec.dependencies_dict()
@@ -380,8 +381,6 @@ class FiredrakePetsc(Package):
                              else 'netcdf' if library == 'netcdf-c'
                              else 'pnetcdf' if library == 'parallel-netcdf'
                              else 'yaml' if library == 'libyaml'
-                             else 'chaco' if library == 'petsc-chaco'
-                             else 'ptscotch' if library == 'scotch'
                              else library),
                     value=('1' if library_requested else '0'))
             )
@@ -392,8 +391,6 @@ class FiredrakePetsc(Package):
                                  else 'netcdf' if library == 'netcdf-c'
                                  else 'pnetcdf' if library == 'parallel-netcdf'
                                  else 'yaml' if library == 'libyaml'
-                                 else 'chaco' if library == 'petsc-chaco'
-                                 else 'ptscotch' if library == 'scotch'
                                  else library), path=spec[library].prefix)
                 )
 
@@ -427,6 +424,17 @@ class FiredrakePetsc(Package):
         else:
             options.append('--with-suitesparse=0')
 
+        # PTScotch: Since we are not using the Parmetis wrapper for now,
+        # we cannot use '--with-ptscotch-dir=...'
+        if '+ptscotch' in spec:
+            options.extend([
+                '--with-ptscotch-include=%s' % spec['scotch'].prefix.include,
+                '--with-ptscotch-lib=%s' % spec['scotch'].libs.joined(),
+                '--with-ptscotch=1'
+            ])
+        else:
+            options.append('--with-ptscotch=0')
+
         # hdf5: configure detection is convoluted for pflotran
         if '+hdf5' in spec:
             options.extend([
@@ -447,6 +455,11 @@ class FiredrakePetsc(Package):
             ])
         else:
             options.append('--with-zlib=0')
+
+        if '+mkl-pardiso' in spec:
+            options.append(
+                '--with-mkl_pardiso-dir=%s' % spec['mkl'].prefix
+            )
 
         python('configure', '--prefix=%s' % prefix, *options)
 
@@ -495,6 +508,13 @@ class FiredrakePetsc(Package):
                         '-da_grid_y', '4',
                         '-pc_type', 'hypre',
                         '-pc_hypre_type', 'boomeramg')
+
+                if 'mkl-pardiso' in spec:
+                    run('ex50',
+                        '-da_grid_x', '4',
+                        '-da_grid_y', '4',
+                        '-pc_type', 'lu',
+                        '-pc_factor_mat_solver_package', 'mkl_pardiso')
 
     def setup_build_environment(self, env):
         # configure fails if these env vars are set outside of Spack

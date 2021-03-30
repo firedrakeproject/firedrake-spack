@@ -1,12 +1,11 @@
 #! /bin/bash
 
-# Change directory here...
-REPO="$(dirname $0)"
-echo $REPO
-exit
+cd $(dirname ${BASH_SOURCE})
+cd ..
+REPO=$PWD
 
-cd $REPO/packages/firedrake-petsc
+mv $REPO/packages/petsc $REPO/packages/petsc.orig
+cp -r $SPACK_ROOT/var/repos/builtin/packages/petsc $REPO/packages/petsc
 
-#mv package.py package.py.bak
-curl -O https://raw.githubusercontent.com/spack/spack/develop/var/spack/repos/builtin/packages/petsc/package.py
-patch -b package.py $REPO/share/firedrake-petsc.patch
+patch $REPO/packages/petsc/package.py -i $REPO/share/petsc.patch
+
