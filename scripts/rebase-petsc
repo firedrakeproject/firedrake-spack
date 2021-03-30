@@ -1,0 +1,12 @@
+#! /bin/bash
+
+# Change directory here...
+REPO="$(dirname $0)"
+echo $REPO
+exit
+
+cd $REPO/packages/firedrake-petsc
+
+#mv package.py package.py.bak
+curl -O https://raw.githubusercontent.com/spack/spack/develop/var/spack/repos/builtin/packages/petsc/package.py
+patch -b package.py $REPO/share/firedrake-petsc.patch
