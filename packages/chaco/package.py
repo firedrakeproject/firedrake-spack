@@ -37,27 +37,25 @@ class Chaco(MakefilePackage):
     homepage = "https://www3.cs.stonybrook.edu/~algorith/implement/chaco/implement.shtml"
     url      = "https://www3.cs.stonybrook.edu/~algorith/implement/chaco/distrib/Chaco-2.2.tar.gz"
 
-    maintainers = ['anon']
+    maintainers = ['connorjward']
 
     version('2.2', sha256='e7c1ab187b2dbd4b682da3dbb99097143b773f6b68b39be989442c176e9bcee1')
 
+    build_directory = 'src'
+
     def edit(self, spec, prefix):
-        with working_dir('code'):
-            makefile = FileFilter('Makefile')
+        makefile = FileFilter('Makefile')
 
-            # Use the Spack compiler wrappers
-            makefile.filter(r'^CC\s=.*', 'CC=cc')
-            makefile.filter(r'^DEST\s*=.*', 'DEST=../lib/libchaco.a')
-            mkdirp('../lib/')
-            cflags = ['-O3'] # ??? Do I want to specify optimisation here
-            cflags.append(self.compiler.cc_pic_flag)
-            cflags.append('-fstack-protector') # ??? Is this generic
-            makefile.filter(r'^CFLAGS\s*=.*', 'CFLAGS=' + ' '.join(cflags))
-            makefile.filter(r'^OFLAGS\s*=.*', 'OFLAGS=' + ' '.join(cflags))
+        # Use the Spack compiler wrapper
+        makefile.filter(r'^CC\s*=.*', 'CC=cc')
 
-    def build(self, spec, prefix):
-        with working_dir('code'):
-            make()
+        # Set install destination
+        makefile.filter(r'^DEST\s*=.*', 'DEST={0}/libchaco.a'.format(prefix.lib))
 
-    def install(self, spec, prefix):
-        install_tree('.', prefix)
+        # Set appropriate compiler flags
+        cflags = '-O2'
+        # cflags.append(self.compiler.cc_pic_flag)
+        # cflags.append('-fstack-protector') # ??? Is this generic
+
+        makefile.filter(r'^CFLAGS\s*=.*', 'CFLAGS={0}'.format(cflags))
+        makefile.filter(r'^OFLAGS\s*=.*', 'OFLAGS={0}'.format(cflags))

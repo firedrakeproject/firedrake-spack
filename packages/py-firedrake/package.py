@@ -14,7 +14,7 @@ class PyFiredrake(PythonPackage):
 
     maintainers = ['connorjward', 'JDBetteridge']
 
-    version('develop')
+    version('develop', branch='master')
 
     # Variants
     variant('slepc', default=False,
@@ -24,7 +24,8 @@ class PyFiredrake(PythonPackage):
     depends_on('python@3.6:3.9')
 
     # External dependencies
-    depends_on('eigen@3.3.3')
+    depends_on('eigen')
+    depends_on('mpi')
     depends_on('py-cachetools')
     depends_on('py-h5py')
     depends_on('py-matplotlib')
@@ -35,7 +36,7 @@ class PyFiredrake(PythonPackage):
     depends_on('py-scipy')
     depends_on('py-setuptools')
     depends_on('py-sympy')
-    depends_on('vtk@9.0.1+python')
+    # depends_on('vtk@9.0.1+python')  # llvm takes about 10 years to compile
 
     # Optional external dependencies
     depends_on('slepc', when='+slepc')
@@ -43,15 +44,14 @@ class PyFiredrake(PythonPackage):
 
     # Future external dependencies
     # (These should be pushed to Spack)
-    depends_on('firedrake.chaco')
     depends_on('firedrake.libsupermesh')
     depends_on('firedrake.py-islpy')
 
     # Internal dependencies
-    depends_on('firedrake.petsc+mumps+ptscotch')
+    depends_on('firedrake.petsc@main+hdf5+superlu-dist+hypre+mumps+ptscotch')  # missing chaco and eigen
     depends_on('firedrake.py-fiat')
     depends_on('firedrake.py-finat')
-    depends_on('firedrake.py-petsc4py')
+    depends_on('firedrake.py-petsc4py@main')
     depends_on('firedrake.py-pyadjoint')
     depends_on('firedrake.py-pyop2')
     depends_on('firedrake.py-tsfc')
