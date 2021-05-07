@@ -17,14 +17,12 @@ class PyLoopy(PythonPackage):
     version('firedrake', branch='firedrake' , submodules=True )
      
     depends_on('py-setuptools', type='build')
-    depends_on('py-pytools')
-    depends_on('py-pymbolic')
+    depends_on('firedrake.py-pytools@main')
+    depends_on('py-pymbolic@main')
     depends_on('py-cgen')
     depends_on('py-genpy')
     depends_on('py-codepy')
     depends_on('py-mako')
-    #depends_on('py-f2py')
-    #depends_on('py-pyopencl')
     depends_on('py-islpy')
 
     depends_on('py-ply')

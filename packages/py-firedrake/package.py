@@ -3,6 +3,8 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import json
+
 from spack import *
 
 
@@ -15,6 +17,7 @@ class PyFiredrake(PythonPackage):
     maintainers = ['connorjward', 'JDBetteridge']
 
     version('develop', branch='master')
+    version('testing', branch='connorjward/test-new-config')
 
     # Variants
     variant('slepc', default=False,
@@ -36,7 +39,8 @@ class PyFiredrake(PythonPackage):
     depends_on('py-scipy')
     depends_on('py-setuptools')
     depends_on('py-sympy')
-    # depends_on('vtk@9.0.1+python')  # llvm takes about 10 years to compile
+    # depends_on('vtk +python')
+    # depends_on('mesa ~llvm swr=none ~opengl ~glx')  # llvm takes about 10 years to compile
 
     # Optional external dependencies
     depends_on('slepc', when='+slepc')
@@ -45,6 +49,7 @@ class PyFiredrake(PythonPackage):
     # Future external dependencies
     # (These should be pushed to Spack)
     depends_on('firedrake.libsupermesh')
+    depends_on('firedrake.libspatialindex')
     depends_on('firedrake.py-islpy')
 
     # Internal dependencies
@@ -64,9 +69,25 @@ class PyFiredrake(PythonPackage):
     # Developer dependencies
     depends_on('py-pylint', when='@develop')
 
-    def install(self, spec, prefix):
+    def install(self, spec, _):
         # Do an editable install if `spack develop firedrake` has been run.
-        if "dev_path" in spec["py-firedrake"].variants:
-            self.setup_py("develop")
-        else:
-            self.setup_py("install")
+        self.setup_py('install')
+        # if "dev_path" in spec['py-firedrake'].variants:
+        #     self.setup_py('develop')
+        # else:
+        #     self.setup_py('install')
+
+    @run_after('install')
+    def post_install(self):
+        config = {
+            'libraries': {
+                'EIGEN_INCLUDE_DIR': self.spec['eigen'].prefix.include,
+            },
+            'options': {
+                'complex': False,
+                'petsc_int_type': 'int32',
+                'cache_dir': '{}/.cache'.format(self.prefix),
+            }
+        }
+        with open('{}/.configuration.json'.format(self.prefix), "w") as f:
+            json.dump(config, f)
