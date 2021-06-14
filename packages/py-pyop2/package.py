@@ -8,6 +8,7 @@ class PyPyop2(PythonPackage):
     git='https://github.com/OP2/PyOP2'
     
     version('master', branch='master')
+    version('testing', branch='connorjward/fix-get-petsc-dir')
 
     phases = ['build_ext', 'install']
     
@@ -22,9 +23,9 @@ class PyPyop2(PythonPackage):
     depends_on('firedrake.petsc@main')
     depends_on('firedrake.py-petsc4py@main')
 
-    depends_on('firedrake.py-coffee@master', when='@master')
+    depends_on('firedrake.py-coffee')
 
-    depends_on('firedrake.py-loopy@firedrake', when='@master')
+    depends_on('firedrake.py-loopy@firedrake')
 
     
     # @run_before('build_ext')

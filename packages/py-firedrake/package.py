@@ -16,31 +16,32 @@ class PyFiredrake(PythonPackage):
 
     maintainers = ['connorjward', 'JDBetteridge']
 
-    version('develop', branch='master')
-    version('testing', branch='connorjward/test-new-config')
+    version('develop', branch='master', no_cache=True)
+    version('testing', branch='connorjward/local-spack-tests', no_cache=True)
 
     # Variants
     variant('slepc', default=False,
             description='Install SLEPc along with PETSc')
+    variant('mpich', default=True, description='Use MPICH as MPI provider')
 
     # Compatible Python versions
-    depends_on('python@3.6:3.9')
+    depends_on('python@3.6:3.8')
 
     # External dependencies
     depends_on('eigen')
     depends_on('mpi')
+    # depends_on('mpich', when='+mpich')
     depends_on('py-cachetools')
     depends_on('py-h5py')
     depends_on('py-matplotlib')
     depends_on('py-mpi4py')
     depends_on('py-numpy')
     depends_on('py-pkgconfig')
+    depends_on('py-pip', type='build')
     depends_on('py-requests')
     depends_on('py-scipy')
     depends_on('py-setuptools')
     depends_on('py-sympy')
-    # depends_on('vtk +python')
-    # depends_on('mesa ~llvm swr=none ~opengl ~glx')  # llvm takes about 10 years to compile
 
     # Optional external dependencies
     depends_on('slepc', when='+slepc')
@@ -53,7 +54,8 @@ class PyFiredrake(PythonPackage):
     depends_on('firedrake.py-islpy')
 
     # Internal dependencies
-    depends_on('firedrake.petsc@main+hdf5+superlu-dist+hypre+mumps+ptscotch')  # missing chaco and eigen
+    # depends_on('firedrake.petsc@main+hdf5+superlu-dist+hypre+mumps+ptscotch')  # missing chaco and eigen
+    depends_on('firedrake.petsc@main+hdf5+hypre+mumps+ptscotch')  # missing chaco and eigen
     depends_on('firedrake.py-fiat')
     depends_on('firedrake.py-finat')
     depends_on('firedrake.py-petsc4py@main')
@@ -77,14 +79,21 @@ class PyFiredrake(PythonPackage):
         # else:
         #     self.setup_py('install')
 
+    @run_before('build')
+    def install_vtk(self):
+        # VTK is a pain to build in Spack so we just use the wheel on PyPI
+        pip = which('pip')
+        pip('install', 'vtk', '--prefix={}'.format(prefix))
+
     @run_after('install')
-    def post_install(self):
+    def generate_config_file(self):
         config = {
             'libraries': {
                 'EIGEN_INCLUDE_DIR': self.spec['eigen'].prefix.include,
             },
             'options': {
                 'complex': False,
+                'install_mode': 'spack',
                 'petsc_int_type': 'int32',
                 'cache_dir': '{}/.cache'.format(self.prefix),
             }
