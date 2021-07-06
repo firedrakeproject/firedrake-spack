@@ -41,21 +41,26 @@ class Chaco(MakefilePackage):
 
     version('2.2', sha256='e7c1ab187b2dbd4b682da3dbb99097143b773f6b68b39be989442c176e9bcee1')
 
-    build_directory = 'src'
+    build_directory = 'code'
 
     def edit(self, spec, prefix):
-        makefile = FileFilter('Makefile')
+        with working_dir(self.build_directory):
+            makefile = FileFilter('Makefile')
 
-        # Use the Spack compiler wrapper
-        makefile.filter(r'^CC\s*=.*', 'CC=cc')
+            # Use the Spack compiler wrapper
+            makefile.filter(r'^CC\s*=.*', 'CC={}'.format(spack_cc))
 
-        # Set install destination
-        makefile.filter(r'^DEST\s*=.*', 'DEST={0}/libchaco.a'.format(prefix.lib))
+            # Set install destination
+            #makefile.filter(r'^DEST\s*=.*', 'DEST={}'.format(self.build_dest))
 
-        # Set appropriate compiler flags
-        cflags = '-O2'
-        # cflags.append(self.compiler.cc_pic_flag)
-        # cflags.append('-fstack-protector') # ??? Is this generic
+            # Set appropriate compiler flags
+            cflags = '-O2'
+            # cflags.append(self.compiler.cc_pic_flag)
+            # cflags.append('-fstack-protector') # ??? Is this generic
 
-        makefile.filter(r'^CFLAGS\s*=.*', 'CFLAGS={0}'.format(cflags))
-        makefile.filter(r'^OFLAGS\s*=.*', 'OFLAGS={0}'.format(cflags))
+            makefile.filter(r'^CFLAGS\s*=.*', 'CFLAGS={}'.format(cflags))
+            makefile.filter(r'^OFLAGS\s*=.*', 'OFLAGS={}'.format(cflags))
+
+    def install(self, spec, prefix):
+        mkdir(prefix.lib)
+        install('exec/chaco', '{}/libchaco.a'.format(prefix.lib))
