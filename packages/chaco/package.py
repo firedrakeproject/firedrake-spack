@@ -43,6 +43,8 @@ class Chaco(MakefilePackage):
 
     build_directory = 'code'
 
+    phases = ["edit", "build"]
+
     def edit(self, spec, prefix):
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
@@ -51,16 +53,17 @@ class Chaco(MakefilePackage):
             makefile.filter(r'^CC\s*=.*', 'CC={}'.format(spack_cc))
 
             # Set install destination
-            #makefile.filter(r'^DEST\s*=.*', 'DEST={}'.format(self.build_dest))
+            makefile.filter(r'^DEST\s*=.*', 'DEST={}/lib/libchaco.a'.format(prefix))
 
             # Set appropriate compiler flags
-            cflags = '-O2'
-            # cflags.append(self.compiler.cc_pic_flag)
+            cflags = ['-O2', self.compiler.cc_pic_flag]
+            cflags = ' '.join(cflags)
             # cflags.append('-fstack-protector') # ??? Is this generic
 
             makefile.filter(r'^CFLAGS\s*=.*', 'CFLAGS={}'.format(cflags))
             makefile.filter(r'^OFLAGS\s*=.*', 'OFLAGS={}'.format(cflags))
 
-    def install(self, spec, prefix):
+    def build(self, spec, prefix):
         mkdir(prefix.lib)
-        install('exec/chaco', '{}/libchaco.a'.format(prefix.lib))
+        with working_dir(self.build_directory):
+            make()

@@ -10,25 +10,35 @@ class Petsc(Package):
     version('develop', branch='firedrake', no_cache=True)
 
     depends_on('blas')
+    depends_on('chaco')
     depends_on('lapack')
     depends_on('mpi')
     depends_on('mumps')
     depends_on('python@3.4:', type='build')
+    depends_on('scalapack')
 
     phases = ['configure', 'build', 'install']
 
     def configure_args(self):
-        args = [
-            '--with-cc={}'.format(self.spec['mpi'].mpicc),
-            '--with-cxx={}'.format(self.spec['mpi'].mpicxx),
-            '--with-fc={}'.format(self.spec['mpi'].mpifc),
-            'CFLAGS={}'.format(' '.join(self.spec.compiler_flags['cflags'])),
-            'FFLAGS={}'.format(' '.join(self.spec.compiler_flags['fflags'])),
-            'CXXFLAGS={}'.format(' '.join(self.spec.compiler_flags['cxxflags'])),
-            '--with-shared-libraries',
-            '--with-blas-lib={}'.format(self.spec['blas'].libs),
-            '--with-lapack-lib={}'.format(self.spec['lapack'].libs)
-        ]
+        args = ['--with-cc={}'.format(self.spec['mpi'].mpicc),
+                '--with-cxx={}'.format(self.spec['mpi'].mpicxx),
+                '--with-fc={}'.format(self.spec['mpi'].mpifc)]
+
+        args += ['CFLAGS={}'.format(' '.join(self.spec.compiler_flags['cflags'])),
+                 'FFLAGS={}'.format(' '.join(self.spec.compiler_flags['fflags'])),
+                 'CXXFLAGS={}'.format(' '.join(self.spec.compiler_flags['cxxflags']))]
+
+        args += ['--with-shared-libraries',
+                 '--with-debugging=0',
+                 '--with-blas-lib={}'.format(self.spec['blas'].libs),
+                 '--with-lapack-lib={}'.format(self.spec['lapack'].libs)]
+
+        args += ['--with-chaco=1',
+                 '--with-chaco-lib={}/lib/libchaco.a'.format(self.spec['chaco'].prefix),
+                 '--with-mumps=1',
+                 '--with-mumps-dir={}'.format(self.spec['mumps'].prefix),
+                 '--with-scalapack=1',
+                 '--with-scalapack-dir={}'.format(self.spec['scalapack'].prefix)]
         return args
 
     def configure(self, spec, prefix):
@@ -41,16 +51,13 @@ class Petsc(Package):
         make('install')
 
     def setup_build_environment(self, env):
-        # configure fails if these env vars are set outside of Spack
         env.unset('PETSC_DIR')
         env.unset('PETSC_ARCH')
 
     def setup_run_environment(self, env):
-        # Set PETSC_DIR in the module file
         env.set('PETSC_DIR', self.prefix)
         env.unset('PETSC_ARCH')
 
     def setup_dependent_build_environment(self, env, dependent_spec):
-        # Set up PETSC_DIR for everyone using PETSc package
         env.set('PETSC_DIR', self.prefix)
         env.unset('PETSC_ARCH')
