@@ -16,6 +16,8 @@ class Petsc(Package):
     depends_on('mumps+mpi~openmp')
     depends_on('python@3.4:', type='build')
     depends_on('scalapack')
+    depends_on('hdf5')
+    depends_on('zlib')
 
     phases = ['configure', 'build', 'install']
 
@@ -38,7 +40,10 @@ class Petsc(Package):
                  '--with-mumps=1',
                  '--with-mumps-dir={}'.format(self.spec['mumps'].prefix),
                  '--with-scalapack=1',
-                 '--with-scalapack-lib={}'.format(self.spec['scalapack'].libs.joined())]
+                 '--with-scalapack-lib={}'.format(self.spec['scalapack'].libs.joined()),
+                 '--with-hdf5=1',
+                 '--with-hdf5-include={}'.format(self.spec['hdf5'].prefix.include),
+                 '--with-hdf5-lib={}'.format(self.spec['hdf5:hl,fortran'].libs.joined())]
         return args
 
     def configure(self, spec, prefix):
