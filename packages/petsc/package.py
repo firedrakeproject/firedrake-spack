@@ -10,10 +10,10 @@ class Petsc(Package):
     version('develop', branch='firedrake', no_cache=True)
 
     depends_on('blas')
-    depends_on('chaco+lib')
+    #depends_on('chaco+lib')
     depends_on('lapack')
     depends_on('mpi')
-    depends_on('mumps')
+    depends_on('mumps+mpi~openmp')
     depends_on('python@3.4:', type='build')
     depends_on('scalapack')
 
@@ -33,12 +33,12 @@ class Petsc(Package):
                  '--with-blas-lib={}'.format(self.spec['blas'].libs),
                  '--with-lapack-lib={}'.format(self.spec['lapack'].libs)]
 
-        args += ['--with-chaco=1',
-                 '--with-chaco-lib={}/lib/libchaco.a'.format(self.spec['chaco'].prefix),
+        args += [#'--with-chaco=1',
+                 #'--with-chaco-dir={}'.format(self.spec['chaco'].prefix),
                  '--with-mumps=1',
                  '--with-mumps-dir={}'.format(self.spec['mumps'].prefix),
                  '--with-scalapack=1',
-                 '--with-scalapack-dir={}'.format(self.spec['scalapack'].prefix)]
+                 '--with-scalapack-lib={}'.format(self.spec['scalapack'].libs.joined())]
         return args
 
     def configure(self, spec, prefix):
