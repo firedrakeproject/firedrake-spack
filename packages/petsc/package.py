@@ -10,7 +10,7 @@ class Petsc(Package):
     version('develop', branch='firedrake', no_cache=True)
 
     depends_on('blas')
-    depends_on('chaco')
+    depends_on('chaco+lib')
     depends_on('lapack')
     depends_on('mpi')
     depends_on('mumps')

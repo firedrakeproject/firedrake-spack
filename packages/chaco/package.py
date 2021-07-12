@@ -3,6 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+from pathlib import Path
+import subprocess
+
 from spack import *
 
 
@@ -41,9 +44,9 @@ class Chaco(MakefilePackage):
 
     version('2.2', sha256='e7c1ab187b2dbd4b682da3dbb99097143b773f6b68b39be989442c176e9bcee1')
 
-    build_directory = 'code'
+    variant('lib', default=False, description='Builds a library as well as an executable')
 
-    phases = ["edit", "build"]
+    build_directory = 'code'
 
     def edit(self, spec, prefix):
         with working_dir(self.build_directory):
@@ -53,7 +56,7 @@ class Chaco(MakefilePackage):
             makefile.filter(r'^CC\s*=.*', 'CC={}'.format(spack_cc))
 
             # Set install destination
-            makefile.filter(r'^DEST\s*=.*', 'DEST={}/lib/libchaco.a'.format(prefix))
+            makefile.filter(r'^DEST\s*=.*', 'DEST=../bin/chaco')
 
             # Set appropriate compiler flags
             cflags = ['-O2', self.compiler.cc_pic_flag]
@@ -64,6 +67,21 @@ class Chaco(MakefilePackage):
             makefile.filter(r'^OFLAGS\s*=.*', 'OFLAGS={}'.format(cflags))
 
     def build(self, spec, prefix):
-        mkdir(prefix.lib)
-        with working_dir(self.build_directory):
+        with working_dir('code'):
+            mkdir('../bin')
             make()
+
+            if '+lib' in self.spec:
+                # See https://gitlab.com/petsc/petsc/-/blob/main/config/BuildSystem/config/packages/Chaco.py
+                mkdir('../lib')
+                cwd = Path()
+                object_list = [str(ofile.relative_to(cwd.absolute()))
+                               for ofile in cwd.cwd().glob('*/*.o')]
+                subprocess.run(['ar', 'cr', 'libchaco.a', *object_list], check=True)
+                subprocess.run(['ranlib', 'libchaco.a'], check=True)
+                subprocess.run(['cp', 'libchaco.a', '../lib/'], check=True)
+
+    def install(self, spec, prefix):
+        install_tree('bin', prefix.bin)
+        if '+lib' in self.spec:
+            install_tree('lib', prefix.lib)
