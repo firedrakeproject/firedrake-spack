@@ -73,14 +73,14 @@ class PyFiredrake(PythonPackage):
 
     phases = ['install']
 
-    def install(self, spec, _):
+    def install(self, spec, prefix):
         # Do an editable install if `spack develop firedrake` has been run.
-        if 'dev_path' in spec['py-firedrake'].variants:
-            self.setup_py('develop')
+        if 'dev_path' in self.spec.variants:
+            self.setup_py('develop', '--prefix={}'.format(prefix))
         else:
-            self.setup_py('install')
+            self.setup_py('install', '--prefix={}'.format(prefix))
 
-    @run_before('install')
+    #@run_before('install')
     def install_vtk(self):
         # VTK is a pain to build in Spack so we just use the wheel on PyPI
         pip = which('pip')
@@ -99,5 +99,5 @@ class PyFiredrake(PythonPackage):
                 'cache_dir': '{}/.cache'.format(self.prefix),
             }
         }
-        with open('{}/configuration.json'.format(self.prefix), "w") as f:
+        with open('{}/.configuration.json'.format(self.prefix), "w") as f:
             json.dump(config, f)
