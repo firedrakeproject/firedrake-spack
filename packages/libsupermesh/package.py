@@ -7,20 +7,12 @@ from spack import *
 
 
 class Libsupermesh(CMakePackage):
-    """FIXME: Put a proper description of your package here."""
+    """libsupermesh parallel supermeshing library"""
 
     homepage = "https://bitbucket.org/libsupermesh/libsupermesh"
-    url      = "https://bitbucket.org/libsupermesh/libsupermesh/downloads/libsupermesh-1.0.1.tar.gz"
+    url      = "https://bitbucket.org/libsupermesh/libsupermesh"
     git      = "https://bitbucket.org/libsupermesh/libsupermesh"
 
     version('master', branch='master')
-    
-    depends_on('mpi')
 
-    def cmake_args(self):
-        return [
-            "-DBUILD_SHARED_LIBS:BOOL=ON",
-            "-DMPI_C_COMPILER={}".format(self.spec['mpi'].mpicc),
-            "-DMPI_CXX_COMPILER={}".format(self.spec['mpi'].mpicxx),
-            "-DMPI_Fortran_COMPILER={}".format(self.spec['mpi'].mpifc)
-        ]
+    depends_on('mpi')
