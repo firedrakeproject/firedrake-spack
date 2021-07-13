@@ -28,9 +28,9 @@ class PyPyop2(PythonPackage):
 
     phases = ['install']
 
-    def install(self, *_):
+    def install(self, spec, prefix):
         # Do an editable install if `spack develop firedrake` has been run.
         if 'dev_path' in self.spec.variants:
-            self.setup_py('develop')
+            self.setup_py('develop', '--prefix={}'.format(prefix))
         else:
-            self.setup_py('install')
+            self.setup_py('install', '--prefix={}'.format(prefix))
