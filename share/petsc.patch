@@ -1,4 +1,0 @@
-19c19
-<     version('main', branch='main')
----
->     version('main', git='https://github.com/firedrakeproject/petsc', branch='firedrake')
