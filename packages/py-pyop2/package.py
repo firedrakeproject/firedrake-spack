@@ -7,10 +7,9 @@ class PyPyop2(PythonPackage):
     url      = "https://github.com/OP2/PyOP2"
     git='https://github.com/OP2/PyOP2'
     
-    version('master', branch='master')
-    version('testing', branch='connorjward/fix-get-petsc-dir')
+    version('develop', branch='connorjward/fix-get-petsc-dir')
 
-    phases = ['build_ext', 'install']
+    phases = ['install']
     
     depends_on('py-setuptools', type="build")
     depends_on('py-pytest', type="build")
@@ -20,16 +19,18 @@ class PyPyop2(PythonPackage):
     depends_on('py-numpy')
     depends_on('py-mpi4py')
     
-    depends_on('firedrake.petsc@main')
-    depends_on('firedrake.py-petsc4py@main')
+    depends_on('firedrake.petsc')
+    depends_on('firedrake.py-petsc4py')
 
     depends_on('firedrake.py-coffee')
 
-    depends_on('firedrake.py-loopy@firedrake')
+    depends_on('firedrake.py-loopy')
 
-    
-    # @run_before('build_ext')
-    # def fixme(self):
-    #     filter_file(r'packages=\[\'pyop2\'\]', 'packages=[\'pyop2\',\'pyop2.codegen\']', 'setup.py')
-        #with open('setup.py', 'r') as ff :
-        #    print( ff.read() )
+    phases = ['install']
+
+    def install(self, *_):
+        # Do an editable install if `spack develop firedrake` has been run.
+        if 'dev_path' in self.spec.variants:
+            self.setup_py('develop')
+        else:
+            self.setup_py('install')

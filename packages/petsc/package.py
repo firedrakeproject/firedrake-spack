@@ -16,7 +16,7 @@ class Petsc(Package):
     depends_on('mumps+mpi~openmp')
     depends_on('python@3.4:', type='build')
     depends_on('scalapack')
-    depends_on('hdf5')
+    depends_on('hdf5+mpi')
     depends_on('zlib')
 
     phases = ['configure', 'build', 'install']

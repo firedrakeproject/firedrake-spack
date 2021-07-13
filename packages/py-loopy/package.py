@@ -14,7 +14,7 @@ class PyLoopy(PythonPackage):
     url      = "https://github.com/firedrakeproject/loopy"
     git = "https://github.com/firedrakeproject/loopy"
 
-    version('firedrake', branch='firedrake', submodules=True, no_cache=True)
+    version('develop', branch='main', submodules=True, no_cache=True)
      
     depends_on('py-setuptools', type='build')
     depends_on('firedrake.py-pytools@main')
