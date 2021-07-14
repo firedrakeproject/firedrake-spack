@@ -26,3 +26,6 @@ For more information, visit http://www.fenicsproject.org
     depends_on('py-setuptools', type="build")
     depends_on('py-numpy', type=("build","run"))
     depends_on('py-sympy', type=("build","run"))
+
+    # See https://github.com/xianyi/OpenBLAS/issues/3225
+    depends_on('openblas@:0.3.13', when='blas=openblas')
