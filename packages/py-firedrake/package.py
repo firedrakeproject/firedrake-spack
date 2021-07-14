@@ -48,13 +48,12 @@ class PyFiredrake(PythonPackage):
 
     # Future external dependencies
     # (These should be pushed to Spack)
-    depends_on('firedrake.libsupermesh')
-    depends_on('firedrake.libspatialindex')
+    depends_on('libsupermesh')
     depends_on('firedrake.py-islpy')
 
     # Internal dependencies
     # depends_on('firedrake.petsc@main+hdf5+superlu-dist+hypre+mumps+ptscotch')  # missing chaco and eigen
-    #depends_on('firedrake.petsc@main+hdf5+hypre+mumps+ptscotch')  # missing chaco and eigen
+    depends_on('firedrake.libspatialindex')
     depends_on('firedrake.petsc')
     depends_on('firedrake.py-fiat')
     depends_on('firedrake.py-finat')
