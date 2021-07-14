@@ -16,3 +16,11 @@ class Libsupermesh(CMakePackage):
     version('master', branch='master')
 
     depends_on('mpi')
+
+    variant('shared', default=True, description='Enable shared library')
+
+    def cmake_args(self):
+        args = ['-DBUILD_SHARED_LIBS=ON']
+        if '~shared' in self.spec:
+            args.remove('-DBUILD_SHARED_LIBS=ON')
+        return args
