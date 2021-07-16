@@ -49,7 +49,7 @@ class Petsc(Package):
 
     # Minimal
     depends_on('blas')
-    #depends_on('chaco+lib')
+    depends_on('chaco@petsc')
     depends_on('lapack')
     depends_on('hdf5@1.12.0+hl+mpi')
     depends_on('hypre')
@@ -97,9 +97,8 @@ class Petsc(Package):
         # External dependencies
         args += ['--with-blas-lib={}'.format(self.spec['blas'].libs),
                  '--with-lapack-lib={}'.format(self.spec['lapack'].libs),
-                 # ~ '--download-chaco',
-                 #'--with-chaco=1',
-                 #'--with-chaco-dir={}'.format(self.spec['chaco'].prefix),
+                 '--with-chaco=1',
+                 '--with-chaco-dir={}'.format(self.spec['chaco'].prefix),
                  '--with-hdf5=1',
                  '--with-hdf5-include={}'.format(self.spec['hdf5'].prefix.include),
                  '--with-hdf5-lib={}'.format(self.spec['hdf5:hl,fortran'].libs.joined()),
