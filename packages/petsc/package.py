@@ -54,7 +54,7 @@ class Petsc(Package):
     depends_on('hdf5@1.12.0+hl+mpi')
     depends_on('hypre')
     depends_on('mpi')
-    depends_on('mumps')
+    depends_on('mumps~openmp')
     depends_on('scalapack')
     depends_on('scotch') # Provides ptscotch
     depends_on('superlu-dist')
@@ -104,12 +104,10 @@ class Petsc(Package):
                  '--with-hdf5-include={}'.format(self.spec['hdf5'].prefix.include),
                  '--with-hdf5-lib={}'.format(self.spec['hdf5:hl,fortran'].libs.joined()),
                  '--with-hypre=1',
-                 '--with-hypre-dir={}'.format(self.spec['mumps'].prefix),
+                 '--with-hypre-dir={}'.format(self.spec['hypre'].prefix),
                  #mpi
                  '--with-mumps=1',
-                 # ~ '--with-mumps-dir={}'.format(self.spec['mumps'].prefix),
-                 '--with-mumps-include={}'.format(self.spec['mumps'].prefix.include),
-                 '--with-mumps-lib={}'.format(self.spec['mumps'].libs.joined()),
+                 '--with-mumps-dir={}'.format(self.spec['mumps'].prefix),
                  '--with-ptscotch=1',
                  '--with-ptscotch-include={}'.format(self.spec['scotch'].prefix.include),
                  '--with-ptscotch-lib={}'.format(self.spec['scotch'].libs.joined()),
