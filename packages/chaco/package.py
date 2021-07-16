@@ -48,20 +48,18 @@ class Chaco(MakefilePackage):
     build_directory = 'code'
 
     def edit(self, spec, prefix):
-        with working_dir(self.build_directory):
-            makefile = FileFilter('Makefile')
+        cflags = ['-O2', self.compiler.cc_pic_flag]
 
-            # Use the Spack compiler wrapper
+        makefile = FileFilter('{}/Makefile'.format(self.build_directory))
+        makefile.filter(r'^DEST\s*=.*', 'DEST=../bin/chaco')
+
+        if self.spec.version == Version('petsc'):
+            with open('make.inc', 'w') as inc:
+                inc.write('CC={}\n'.format(spack_cc))
+                inc.write('CFLAGS={}\n'.format(' '.join(cflags)))
+                inc.write('OFLAGS={}\n'.format(' '.join(cflags)))
+        else:
             makefile.filter(r'^CC\s*=.*', 'CC={}'.format(spack_cc))
-
-            # Set install destination
-            makefile.filter(r'^DEST\s*=.*', 'DEST=../bin/chaco')
-
-            # Set appropriate compiler flags
-            cflags = ['-O2', self.compiler.cc_pic_flag]
-            cflags = ' '.join(cflags)
-            # cflags.append('-fstack-protector') # ??? Is this generic
-
             makefile.filter(r'^CFLAGS\s*=.*', 'CFLAGS={}'.format(cflags))
             makefile.filter(r'^OFLAGS\s*=.*', 'OFLAGS={}'.format(cflags))
 
@@ -70,7 +68,7 @@ class Chaco(MakefilePackage):
             mkdir('../bin')
             make()
 
-            if self.spec.version == 'petsc':
+            if self.spec.version == Version('petsc'):
                 # See https://gitlab.com/petsc/petsc/-/blob/main/config/BuildSystem/config/packages/Chaco.py
                 mkdir('../lib')
                 cwd = Path()
@@ -82,5 +80,5 @@ class Chaco(MakefilePackage):
 
     def install(self, spec, prefix):
         install_tree('bin', prefix.bin)
-        if self.spec.version == 'petsc':
+        if self.spec.version == Version('petsc'):
             install_tree('lib', prefix.lib)
