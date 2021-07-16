@@ -7,13 +7,14 @@ from spack import *
 
 
 class PyPyadjoint(PythonPackage):
-    """FIXME: Put a proper description of your package here."""
+    '''The algorithmic differentation tool pyadjoint and add-ons.'''
 
     homepage = 'https://firedrakeproject.org'
+    url      = 'https://github.com/dolfin-adjoint/pyadjoint.git'
     git      = 'https://github.com/dolfin-adjoint/pyadjoint.git'
 
     maintainers = ['connorjward', 'JDBetteridge']
 
-    version('master', branch='master')
+    version('develop', branch='master', no_cache=True)
 
     depends_on('py-setuptools', type='build')

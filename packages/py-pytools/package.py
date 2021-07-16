@@ -1,4 +1,4 @@
-# Copyright 2013-2019 Lawrence Livermore National Security, LLC and other
+# Copyright 2013-2021 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
@@ -7,16 +7,14 @@ from spack import *
 
 
 class PyPytools(PythonPackage):
-    """pytools"""
+    '''Pytools is a big bag of things that are 'missing' from the Python standard library.'''
 
-    # FIXME: Add a proper url for your package's homepage here.
-    homepage = "https://github.com/inducer/pytools"
-    url      = "https://github.com/inducer/pytools"
-    git = "https://github.com/inducer/pytools"
+    homepage = 'https://documen.tician.de/pytools/'
+    url      = 'https://github.com/inducer/pytools'
+    git      = 'https://github.com/inducer/pytools'
 
-    version('main', branch='main')
+    version('develop', branch='main', no_cache=True)
 
-    # FIXME: Add dependencies if required.
     depends_on('py-setuptools', type='build')
     depends_on('py-appdirs')
     depends_on('py-numpy')

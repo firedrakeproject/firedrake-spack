@@ -9,7 +9,8 @@ from spack import *
 
 
 class PyFiredrake(PythonPackage):
-    """FIXME: Put a proper description of your package here."""
+    '''Firedrake is an automated system for the portable solution of partial
+    differential equations using the finite element method (FEM)'''
 
     homepage = 'https://firedrakeproject.org'
     git      = 'https://github.com/firedrakeproject/firedrake.git'
@@ -94,5 +95,9 @@ class PyFiredrake(PythonPackage):
                 'cache_dir': '{}/.cache'.format(self.prefix),
             }
         }
-        with open('{}/.configuration.json'.format(self.prefix), "w") as f:
+        with open('{}/.configuration.json'.format(self.prefix), 'w') as f:
             json.dump(config, f)
+
+    def setup_run_environment(self, env):
+        env.set('OMP_NUM_THREADS', 1)
+        env.set('OPENBLAS_NUM_THREADS', 1)
