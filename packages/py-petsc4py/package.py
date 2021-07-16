@@ -9,14 +9,16 @@ from spack import *
 
 
 class PyPetsc4py(PythonPackage):
-    """This package provides Python bindings for the PETSc package.
-    """
+    '''PETSc, pronounced PET-see (the S is silent), is a suite of data structures
+    and routines for the scalable (parallel) solution of scientific applications
+    modeled by partial differential equations.
+    '''
 
-    homepage = "https://gitlab.com/petsc/petsc4py"
-    url      = "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc4py-3.15.0.tar.gz"
-    git='https://github.com/firedrakeproject/petsc'
+    homepage = 'https://www.mcs.anl.gov/petsc/'
+    url      = 'https://github.com/firedrakeproject/petsc'
+    git      = 'https://github.com/firedrakeproject/petsc'
 
-    maintainers = ['dalcinl', 'balay']
+    maintainers = ['connorjward']
 
     version('develop', branch='firedrake', no_cache=True)
 
@@ -26,7 +28,7 @@ class PyPetsc4py(PythonPackage):
     depends_on('python@2.6:2.8,3.3:', type=('build', 'run'))
     depends_on('py-setuptools', type='build')
     depends_on('py-numpy', type=('build', 'run'))
-    depends_on('py-mpi4py', when='+mpi', type=('build', 'run'))
+    depends_on('py-mpi4py', type=('build', 'run'))
 
     depends_on('firedrake.petsc')
 

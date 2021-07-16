@@ -7,18 +7,15 @@ from spack import *
 
 
 class PyCodepy(PythonPackage):
-    """codepy"""
+    '''Generate and execute native code at run time, from Python '''
 
-    # FIXME: Add a proper url for your package's homepage here.
-    homepage = "https://github.com/inducer/codepy"
-    url      = "https://github.com/inducer/codepy"
-    git="https://github.com/inducer/codepy"
+    homepage = 'http://mathema.tician.de/software/codepy'
+    url      = 'https://github.com/inducer/codepy'
+    git      = 'https://github.com/inducer/codepy'
 
-    # FIXME: Add proper versions and checksums here.
-    version('main', branch='main')
+    version('develop', branch='main')
 
-    # FIXME: Add dependencies if required.
-    # depends_on('py-setuptools', type='build')
+    depends_on('py-setuptools', type='build')
     depends_on('py-pytools')
     depends_on('py-numpy')
     depends_on('py-appdirs')
