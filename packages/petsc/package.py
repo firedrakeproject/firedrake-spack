@@ -10,7 +10,7 @@ class Petsc(Package):
     version('develop', branch='firedrake', no_cache=True)
 
     depends_on('blas')
-    #depends_on('chaco+lib')
+    depends_on('chaco+petsc')
     depends_on('lapack')
     depends_on('mpi')
     depends_on('mumps+mpi~openmp')
@@ -35,8 +35,8 @@ class Petsc(Package):
                  '--with-blas-lib={}'.format(self.spec['blas'].libs),
                  '--with-lapack-lib={}'.format(self.spec['lapack'].libs)]
 
-        args += [#'--with-chaco=1',
-                 #'--with-chaco-dir={}'.format(self.spec['chaco'].prefix),
+        args += ['--with-chaco=1',
+                 '--with-chaco-dir={}'.format(self.spec['chaco'].prefix),
                  '--with-mumps=1',
                  '--with-mumps-dir={}'.format(self.spec['mumps'].prefix),
                  '--with-scalapack=1',
