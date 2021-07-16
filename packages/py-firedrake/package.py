@@ -28,7 +28,7 @@ class PyFiredrake(PythonPackage):
     depends_on('python@3.6:3.8')
 
     # External dependencies
-    depends_on('eigen')
+    depends_on('eigen@3.3.3')
     depends_on('mpi')
     # depends_on('mpich', when='+mpich')
     depends_on('py-pip', type=('build', 'run'))
@@ -86,7 +86,7 @@ class PyFiredrake(PythonPackage):
     def generate_config_file(self):
         config = {
             'libraries': {
-                'EIGEN_INCLUDE_DIR': self.spec['eigen'].prefix.include,
+                'EIGEN_INCLUDE_DIR': '{}/eigen3'.format(self.spec['eigen'].prefix.include),
             },
             'options': {
                 'complex': False,
