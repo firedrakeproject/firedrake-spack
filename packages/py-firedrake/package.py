@@ -30,11 +30,12 @@ class PyFiredrake(PythonPackage):
     depends_on('eigen')
     depends_on('mpi')
     # depends_on('mpich', when='+mpich')
+    depends_on('py-pip', type=('build', 'run'))
     depends_on('py-cachetools')
     depends_on('py-h5py')
     depends_on('py-matplotlib')
     depends_on('py-mpi4py')
-    depends_on('py-numpy')
+    depends_on('py-numpy ^openblas@:0.3.13')
     depends_on('py-pkgconfig')
     depends_on('py-pip', type='build')
     depends_on('py-requests')
@@ -62,6 +63,8 @@ class PyFiredrake(PythonPackage):
     depends_on('firedrake.py-pyop2')
     depends_on('firedrake.py-tsfc')
     depends_on('firedrake.py-ufl')
+    # VTK is a pain to build in Spack so we just use the wheel ~on PyPI~ locally
+    depends_on('firedrake.py-vtk')
 
     # Test dependencies
     depends_on('py-pytest', type='test')
@@ -78,12 +81,6 @@ class PyFiredrake(PythonPackage):
             self.setup_py('develop', '--prefix={}'.format(prefix))
         else:
             self.setup_py('install', '--prefix={}'.format(prefix))
-
-    #@run_before('install')
-    def install_vtk(self):
-        # VTK is a pain to build in Spack so we just use the wheel on PyPI
-        pip = which('pip')
-        pip('install', 'vtk', '--prefix={}'.format(prefix))
 
     @run_after('install')
     def generate_config_file(self):
