@@ -15,7 +15,6 @@ class PyTsfc(PythonPackage):
     
     version('develop', branch='master', no_cache=True)
 
-    depends_on('py-setuptools', type='build')
     depends_on('py-numpy')
 
     depends_on('firedrake.py-coffee')                        
