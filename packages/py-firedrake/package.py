@@ -37,7 +37,6 @@ class PyFiredrake(PythonPackage):
     depends_on('py-mpi4py')
     depends_on('py-numpy ^openblas@:0.3.13')
     depends_on('py-pkgconfig')
-    depends_on('py-pip', type='build')
     depends_on('py-requests')
     depends_on('py-scipy')
     depends_on('py-setuptools')
