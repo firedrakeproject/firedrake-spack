@@ -21,6 +21,6 @@ class Libsupermesh(CMakePackage):
 
     def cmake_args(self):
         args = []
-        if 'shared' in self.spec:
+        if '+shared' in self.spec:
             args.append('-DBUILD_SHARED_LIBS=ON')
         return args
