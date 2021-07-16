@@ -14,7 +14,5 @@ class PyFinat(PythonPackage):
    
     version('develop', branch='master')
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-wheel', type='build')
     depends_on('py-numpy', type=('build','run'))
     depends_on('py-sympy', type=('build','run'))
