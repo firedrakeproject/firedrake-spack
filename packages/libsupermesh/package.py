@@ -7,20 +7,20 @@ from spack import *
 
 
 class Libsupermesh(CMakePackage):
-    """libsupermesh parallel supermeshing library"""
+    '''libsupermesh parallel supermeshing library'''
 
-    homepage = "https://bitbucket.org/libsupermesh/libsupermesh"
-    url      = "https://bitbucket.org/libsupermesh/libsupermesh"
-    git      = "https://bitbucket.org/libsupermesh/libsupermesh"
+    homepage = 'https://bitbucket.org/libsupermesh/libsupermesh'
+    url      = 'https://bitbucket.org/libsupermesh/libsupermesh'
+    git      = 'https://bitbucket.org/libsupermesh/libsupermesh'
 
-    version('master', branch='master')
-
-    depends_on('mpi')
+    version('develop', branch='master', no_cache=True)
 
     variant('shared', default=True, description='Enable shared library')
 
+    depends_on('mpi')
+
     def cmake_args(self):
-        args = ['-DBUILD_SHARED_LIBS=ON']
-        if '~shared' in self.spec:
-            args.remove('-DBUILD_SHARED_LIBS=ON')
+        args = []
+        if 'shared' in self.spec:
+            args.append('-DBUILD_SHARED_LIBS=ON')
         return args

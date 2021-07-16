@@ -7,10 +7,10 @@ from spack import *
 
 
 class Libspatialindex(CMakePackage):
-    """libsupermesh parallel supermeshing library"""
+    '''C++ implementation of R*-tree, an MVR-tree and a TPR-tree with C API'''
 
-    homepage = "https://github.com/firedrakeproject/libspatialindex"
-    url      = "https://github.com/firedrakeproject/libspatialindex"
-    git      = "https://github.com/firedrakeproject/libspatialindex"
+    homepage = 'http://libspatialindex.github.com/'
+    url      = 'https://github.com/firedrakeproject/libspatialindex'
+    git      = 'https://github.com/firedrakeproject/libspatialindex'
 
-    version('master', branch='master')
+    version('develop', branch='master', no_cache=True)
