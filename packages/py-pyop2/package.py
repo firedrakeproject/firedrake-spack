@@ -12,7 +12,7 @@ class PyPyop2(PythonPackage):
     url      = 'https://github.com/OP2/PyOP2'
     git      = 'https://github.com/OP2/PyOP2'
     
-    version('develop', branch='connorjward/fix-get-petsc-dir', no_cache=True)
+    version('develop', branch='master', no_cache=True)
 
     phases = ['install']
     
