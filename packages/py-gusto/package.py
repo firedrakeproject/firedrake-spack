@@ -10,12 +10,10 @@ class PyGusto(PythonPackage):
     '''Three dimensional atmospheric dynamical core using the Gung Ho numerics.'''
 
     homepage = 'http://firedrakeproject.org/gusto/'
-    url      = 'https://github.com/firedrakeproject/gusto'
     git      = 'https://github.com/firedrakeproject/gusto'
     
-    version('develop', branch='master')
-
-    depends_on('py-setuptools', type='build')
+    version('develop', branch='master', no_cache=True)
 
     depends_on('py-firedrake')
     depends_on('py-netcdf4')
+    depends_on('py-setuptools', type='build')

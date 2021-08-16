@@ -10,12 +10,9 @@ class PyIcepack(PythonPackage):
     '''Finite element modeling of glaciers and ice sheets.'''
 
     homepage = 'https://icepack.github.io/'
-    url      = 'https://github.com/icepack/icepack/'
     git      = 'https://github.com/icepack/icepack/'
     
-    version('develop', branch='master')
-
-    depends_on('py-setuptools', type='build')
+    version('develop', branch='master', no_cache=True)
 
     depends_on('py-firedrake')
     depends_on('py-geojson')  # TODO
@@ -28,5 +25,6 @@ class PyIcepack(PythonPackage):
     depends_on('py-pooch')
     depends_on('py-rasterio@1.0.26:')
     depends_on('py-scipy')
+    depends_on('py-setuptools', type='build')
     depends_on('py-shapely')
     depends_on('py-tqdm')

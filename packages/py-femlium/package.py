@@ -12,10 +12,9 @@ class PyFemlium(PythonPackage):
     '''
 
     homepage = 'https://femlium.github.io/'
-    url      = 'https://github.com/FEMlium/FEMlium/'
     git      = 'https://github.com/FEMlium/FEMlium/'
     
-    version('develop', branch='master')
+    version('develop', branch='master', no_cache=True)
 
     variant('firedrake', default=True, description='Use the Firedrake backend')
 
@@ -27,4 +26,3 @@ class PyFemlium(PythonPackage):
     depends_on('py-numpy')
     depends_on('py-pyproj')
     depends_on('py-setuptools', type='build')
-

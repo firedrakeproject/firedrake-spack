@@ -10,16 +10,14 @@ class PyThetis(PythonPackage):
     '''Finite element flow solver for simulating coastal and estuarine flows.'''
 
     homepage = 'https://thetisproject.org/'
-    url      = 'https://github.com/thetisproject/thetis'
     git      = 'https://github.com/thetisproject/thetis'
     
-    version('develop', branch='master')
-
-    depends_on('py-setuptools', type='build')
+    version('develop', branch='master', no_cache=True)
 
     depends_on('py-firedrake')
     depends_on('py-netcdf4')
     depends_on('py-pyproj')
     depends_on('py-pytz')
     depends_on('py-scipy')
+    depends_on('py-setuptools', type='build')
     depends_on('py-uptide')  # TODO

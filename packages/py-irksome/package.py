@@ -10,10 +10,9 @@ class PyIrksome(PythonPackage):
     '''Solvers for Implicit Runge Kutta methods'''
 
     homepage = 'https://firedrakeproject.github.io/Irksome/'
-    url      = 'https://github.com/firedrakeproject/Irksome/'
     git      = 'https://github.com/firedrakeproject/Irksome/'
     
-    version('develop', branch='master')
+    version('develop', branch='master', no_cache=True)
 
-    depends_on('py-setuptools', type='build')
     depends_on('py-firedrake')
+    depends_on('py-setuptools', type='build')
