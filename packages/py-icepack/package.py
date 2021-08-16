@@ -16,7 +16,7 @@ class PyIcepack(PythonPackage):
 
     depends_on('py-firedrake')
     depends_on('py-geojson')
-    depends_on('py-gmsh')  # TODO
+    depends_on('py-pygmsh')
     depends_on('py-matplotlib')
     depends_on('py-meshio')  # TODO
     depends_on('py-meshpy')  # TODO
