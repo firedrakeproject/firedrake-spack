@@ -18,7 +18,7 @@ class PyIcepack(PythonPackage):
     depends_on('py-geojson')
     depends_on('py-pygmsh')
     depends_on('py-matplotlib')
-    depends_on('py-meshio')  # TODO
+    depends_on('py-meshio')
     depends_on('py-meshpy')  # TODO
     depends_on('py-netcdf4')
     depends_on('py-numpy')
