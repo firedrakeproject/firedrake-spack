@@ -21,7 +21,7 @@ class PyFemlium(PythonPackage):
     depends_on('py-branca')  # TODO
     depends_on('py-firedrake', when='+firedrake')
     depends_on('py-folium')  # TODO
-    depends_on('py-geojson')  # TODO
+    depends_on('py-geojson')
     depends_on('py-matplotlib')
     depends_on('py-numpy')
     depends_on('py-pyproj')
