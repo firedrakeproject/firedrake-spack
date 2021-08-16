@@ -18,7 +18,7 @@ class PyFemlium(PythonPackage):
 
     variant('firedrake', default=True, description='Use the Firedrake backend')
 
-    depends_on('py-branca')  # TODO
+    depends_on('py-branca')
     depends_on('py-firedrake', when='+firedrake')
     depends_on('py-folium')  # TODO
     depends_on('py-geojson')
