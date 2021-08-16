@@ -20,7 +20,7 @@ class PyFemlium(PythonPackage):
 
     depends_on('py-branca')
     depends_on('py-firedrake', when='+firedrake')
-    depends_on('py-folium')  # TODO
+    depends_on('py-folium')
     depends_on('py-geojson')
     depends_on('py-matplotlib')
     depends_on('py-numpy')
