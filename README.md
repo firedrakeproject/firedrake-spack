@@ -1,27 +1,15 @@
-**IMPORTANT**
+Spack repository containing packages for installing [Firedrake](https://firedrakeproject.org)
+and applications depending on Firedrake such as [Irksome](https://github.com/firedrakeproject/Irksome/)
+and [icepack](https://github.com/icepack/icepack/).
 
-I have not yet managed to get this working quite yet. See `TODO.md` for outstanding tasks.
+## Installation instructions
 
----
-
-To add this repository to spack run (from the repository root)
-
-```bash
-$ spack repo add .
-```
-
-## Using the Firedrake fork of PETSc
-
-To get PETSc to clone from the Firedrake fork we apply a patch to the upstream `package.py` file from Spack.
-To regenerate the `package.py` in this repository run the `rebase-petsc` script.
-
-## Current workflow
+To install Firedrake you should run:
 
 ```bash
 $ spack repo add <this directory>
 $ spack env create -d <env directory>
 $ spack env activate <env directory>
 $ spack add py-firedrake@develop
-$ spack develop py-firedrake@develop (this will not work)
-$ spack install --fail-fast
+$ spack install
 ```
