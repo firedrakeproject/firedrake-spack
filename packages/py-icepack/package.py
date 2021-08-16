@@ -19,7 +19,7 @@ class PyIcepack(PythonPackage):
     depends_on('py-pygmsh')
     depends_on('py-matplotlib')
     depends_on('py-meshio')
-    depends_on('py-meshpy')  # TODO
+    depends_on('py-meshpy')
     depends_on('py-netcdf4')
     depends_on('py-numpy')
     depends_on('py-pooch')
