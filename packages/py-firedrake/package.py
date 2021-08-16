@@ -17,7 +17,7 @@ class PyFiredrake(PythonPackage):
 
     maintainers = ['connorjward', 'JDBetteridge']
 
-    version('develop', branch='spack-install-v2', no_cache=True)
+    version('develop', branch='master', no_cache=True)
 
     # Variants
     variant('slepc', default=False,
@@ -53,11 +53,10 @@ class PyFiredrake(PythonPackage):
     depends_on('firedrake.py-islpy')
 
     # Internal dependencies
-    # depends_on('firedrake.petsc@main+hdf5+superlu-dist+hypre+mumps+ptscotch')  # missing chaco and eigen
     depends_on('firedrake.libspatialindex')
-    depends_on('firedrake.petsc')
     depends_on('firedrake.py-fiat')
     depends_on('firedrake.py-finat')
+    depends_on('firedrake.petsc')
     depends_on('firedrake.py-petsc4py')
     depends_on('firedrake.py-pyadjoint')
     depends_on('firedrake.py-pyop2')
@@ -70,8 +69,8 @@ class PyFiredrake(PythonPackage):
     depends_on('py-pytest', type='test')
     depends_on('py-pytest-xdist', type='test')
 
-    # Developer dependencies
-    depends_on('py-pylint', when='@develop')
+    # Make Firedrake configuration not depend on firedrake-install
+    patch('config.patch')
 
     phases = ['install']
 
