@@ -15,7 +15,7 @@ class PyMeshpy(PythonPackage):
     version('2020.1', sha256='7b14eef33ccfb7974c058cea04672bfcd66e57dfcfa6a65cf01943b08964e879')
 
     depends_on('python@3.6:', type=('build', 'run'))
-    depends_on('py-gmsh_interop', type=('build', 'run'))  # TODO
+    depends_on('py-gmsh-interop', type=('build', 'run'))
     depends_on('py-numpy', type=('build', 'run'))
     depends_on('py-setuptools', type='build')
     depends_on('py-pytools@2011.2:', type=('build', 'run'))
