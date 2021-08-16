@@ -20,4 +20,4 @@ class PyThetis(PythonPackage):
     depends_on('py-pytz')
     depends_on('py-scipy')
     depends_on('py-setuptools', type='build')
-    depends_on('py-uptide')  # TODO
+    depends_on('py-uptide')
