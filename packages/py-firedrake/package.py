@@ -17,15 +17,15 @@ class PyFiredrake(PythonPackage):
 
     maintainers = ['connorjward', 'JDBetteridge']
 
-    version('develop', branch='master', no_cache=True)
+    version('develop', branch='master', get_full_repo=True, no_cache=True)
 
     # Variants
-    variant('slepc', default=False,
-            description='Install SLEPc along with PETSc')
+    # ~ variant('slepc', default=False,
+            # ~ description='Install SLEPc along with PETSc')
     variant('mpich', default=True, description='Use MPICH as MPI provider')
 
     # Compatible Python versions
-    depends_on('python@3.6:3.8')
+    depends_on('python@3.6:3.10')
 
     # External dependencies
     depends_on('eigen@3.3.3')
@@ -33,6 +33,7 @@ class PyFiredrake(PythonPackage):
     # depends_on('mpich', when='+mpich')
     depends_on('py-pip', type=('build', 'run'))
     depends_on('py-cachetools')
+    depends_on('py-cython', type=('build', 'run'))
     depends_on('py-h5py')
     depends_on('py-matplotlib')
     depends_on('py-mpi4py')
@@ -44,12 +45,12 @@ class PyFiredrake(PythonPackage):
     depends_on('py-sympy')
 
     # Optional external dependencies
-    depends_on('slepc', when='+slepc')
-    depends_on('py-slepc4py', when='+slepc')
+    # ~ depends_on('slepc', when='+slepc')
+    # ~ depends_on('py-slepc4py', when='+slepc')
 
     # Future external dependencies
     # (These should be pushed to Spack)
-    depends_on('libsupermesh')
+    depends_on('libsupermesh ^mpich')
     depends_on('firedrake.py-islpy')
 
     # Internal dependencies
@@ -76,10 +77,12 @@ class PyFiredrake(PythonPackage):
 
     def install(self, spec, prefix):
         # Do an editable install if `spack develop firedrake` has been run.
-        if 'dev_path' in self.spec.variants:
-            self.setup_py('develop', '--prefix={}'.format(prefix))
-        else:
-            self.setup_py('install', '--prefix={}'.format(prefix))
+        with working_dir(self.build_directory):
+            python = which('python')
+            if 'dev_path' in self.spec.variants:
+                python('setup.py', 'develop', '--prefix={}'.format(prefix))
+            else:
+                python('setup.py', 'install', '--prefix={}'.format(prefix))
 
     @run_after('install')
     def generate_config_file(self):

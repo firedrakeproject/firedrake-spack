@@ -11,7 +11,7 @@ class PyFiat(PythonPackage):
     homepage = 'https://fenicsproject.org/'
     url      = 'https://github.com/firedrakeproject/fiat'
     git      = 'https://github.com/firedrakeproject/fiat'
-    
+
     version('develop', branch='master')
 
     depends_on('py-setuptools', type='build')
@@ -19,4 +19,4 @@ class PyFiat(PythonPackage):
     depends_on('py-sympy', type=('build','run'))
 
     # See https://github.com/xianyi/OpenBLAS/issues/3225
-    depends_on('openblas@:0.3.13', when='blas=openblas')
+    # ~ depends_on('openblas@:0.3.13', when='blas=openblas')
