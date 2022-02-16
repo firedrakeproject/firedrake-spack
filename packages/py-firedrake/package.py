@@ -7,6 +7,30 @@ import json
 
 from spack import *
 
+class FiredrakeConfiguration(dict):
+    """A dictionary extended to facilitate the storage of Firedrake
+    configuration information."""
+    def __init__(self, args=None):
+        super(FiredrakeConfiguration, self).__init__()
+
+        '''A record of the persistent options in force.'''
+        self["options"] = {}
+        '''Relevant environment variables.'''
+        self["environment"] = {}
+        '''Additional packages installed via the plugin interface.'''
+        self["additions"] = []
+
+        if args:
+            for o in self._persistent_options:
+                if o in args.__dict__.keys():
+                    self["options"][o] = args.__dict__[o]
+
+    _persistent_options = ["package_manager",
+                           "minimal_petsc", "mpicc", "mpicxx", "mpif90", "mpiexec", "disable_ssh",
+                           "honour_petsc_dir", "with_parmetis",
+                           "slepc", "packages", "honour_pythonpath",
+                           "opencascade", "tinyasm",
+                           "petsc_int_type", "cache_dir", "complex", "remove_build_files", "with_blas"]
 
 class PyFiredrake(PythonPackage):
     '''Firedrake is an automated system for the portable solution of partial
@@ -71,11 +95,17 @@ class PyFiredrake(PythonPackage):
     depends_on('py-pytest-xdist', type='test')
 
     # Make Firedrake configuration not depend on firedrake-install
-    patch('config.patch')
+    # ~ patch('config.patch')
 
     phases = ['install']
 
     def install(self, spec, prefix):
+        print('INSTALL')
+        print('prefix:', prefix)
+        try:
+            print('spec.devpath', spec.devpath)
+        except:
+            pass
         # Do an editable install if `spack develop firedrake` has been run.
         with working_dir(self.build_directory):
             python = which('python')
@@ -84,21 +114,43 @@ class PyFiredrake(PythonPackage):
             else:
                 python('setup.py', 'install', '--prefix={}'.format(prefix))
 
-    @run_after('install')
+    @run_before('install')
     def generate_config_file(self):
-        config = {
-            'libraries': {
-                'EIGEN_INCLUDE_DIR': '{}/eigen3'.format(self.spec['eigen'].prefix.include),
-            },
-            'options': {
-                'complex': False,
-                'install_mode': 'spack',
-                'petsc_int_type': 'int32',
-                'cache_dir': '{}/.cache'.format(self.prefix),
-            }
+        print('BEFORE INSTALL')
+        config = FiredrakeConfiguration()
+        config['options'] = {
+            'cache_dir':          '{}/.cache'.format(self.prefix),
+            'complex':            False,
+            'disable_ssh':        False,
+            'honour_petsc_dir':   True,
+            'honour_pythonpath':  False,
+            'minimal_petsc':      False,
+            'mpicc':              '{}/mpicc'.format(self.spec['mpi'].prefix.bin),
+            'mpicxx':             '{}/mpicxx'.format(self.spec['mpi'].prefix.bin),
+            'mpiexec':            '{}/mpiexec'.format(self.spec['mpi'].prefix.bin),
+            'mpif90':             '{}/mpif90'.format(self.spec['mpi'].prefix.bin),
+            'opencascade':        False,
+            'package_manager':    False,
+            'packages':           [],
+            'petsc_int_type':     'int32',
+            'remove_build_files': False,
+            'slepc':              False,
+            'tinyasm':            False,
+            'with_blas':          None,
+            'with_parmetis':      False
         }
-        with open('{}/.configuration.json'.format(self.prefix), 'w') as f:
-            json.dump(config, f)
+        print('self.prefix:', self.prefix)
+        print('self.spec.prefix:', self.spec.prefix)
+        print(self.spec.variants)
+        print('self.spec.variants[\'dev_path\'].value:', self.spec.variants['dev_path'].value)
+        if 'dev_path' in self.spec.variants:
+            config_file = '{}/firedrake_configuration/configuration.json'.format(self.spec.variants['dev_path'].value)
+        else:
+            config_file = '{}/firedrake_configuration/configuration.json'.format(self.prefix)
+        with open(config_file, 'w') as fh:
+            from pprint import pprint
+            pprint(json.dumps(config))
+            json.dump(config, fh)
 
     def setup_run_environment(self, env):
         env.set('OMP_NUM_THREADS', 1)
