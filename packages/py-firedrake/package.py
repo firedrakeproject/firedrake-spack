@@ -32,6 +32,7 @@ class FiredrakeConfiguration(dict):
                            "opencascade", "tinyasm",
                            "petsc_int_type", "cache_dir", "complex", "remove_build_files", "with_blas"]
 
+
 class PyFiredrake(PythonPackage):
     '''Firedrake is an automated system for the portable solution of partial
     differential equations using the finite element method (FEM)'''
@@ -46,7 +47,27 @@ class PyFiredrake(PythonPackage):
     # Variants
     # ~ variant('slepc', default=False,
             # ~ description='Install SLEPc along with PETSc')
-    variant('mpich', default=True, description='Use MPICH as MPI provider')
+    # ~ variant('mpich', default=True, description='Use MPICH as MPI provider')
+    variant(
+        'minimal-petsc',
+        default=False,
+        description='Build PETSc with minimal packages for Firedrake',
+    )
+    variant(
+        'complex',
+        default=False,
+        description='Install Firedrake in complex mode'
+    )
+    variant(
+        '64-bit-indices',
+        default=False,
+        description='Install PETSc using 64bit indices'
+    )
+    variant(
+        'slepc',
+        default=False,
+        description='Install SLEPc and slepc4py'
+    )
 
     # Compatible Python versions
     depends_on('python@3.6:3.10')
@@ -69,19 +90,34 @@ class PyFiredrake(PythonPackage):
     depends_on('py-sympy')
 
     # Optional external dependencies
-    # ~ depends_on('slepc', when='+slepc')
-    # ~ depends_on('py-slepc4py', when='+slepc')
+    depends_on('slepc', when='+slepc')
+    depends_on('py-slepc4py', when='+slepc')
 
     # Future external dependencies
     # (These should be pushed to Spack)
-    depends_on('libsupermesh ^mpich')
+    depends_on('libsupermesh')
     depends_on('firedrake.py-islpy')
 
     # Internal dependencies
+    # PETSc
+    # BLAS, LAPACK, zlib (shared libraries) included by default
+    # TODO:
+    # --download-pastix missing for full
+    # --download-ml missing for real_int32
+    minimal = ' +shared +chaco +hdf5 +mpi +ptscotch +superlu-dist'
+    full    = ' +hwloc +metis +netcdf-c +parallel-netcdf +suite-sparse'
+    real    = ' +hypre'
+    int32   = ' +mumps +scalapack'
+    eigen   = ' ^eigen@3.3.3'
+
+    depends_on('firedrake.petsc@develop' + minimal + eigen)  # (when='minimal-petsc')
+    depends_on('firedrake.petsc@develop' + full, when='~minimal-petsc')
+    depends_on('firedrake.petsc@develop' + real, when='~complex')
+    depends_on('firedrake.petsc@develop' + int32, when='~64-bit-indices')
+
     depends_on('firedrake.libspatialindex')
     depends_on('firedrake.py-fiat')
     depends_on('firedrake.py-finat')
-    depends_on('firedrake.petsc')
     depends_on('firedrake.py-petsc4py')
     depends_on('firedrake.py-pyadjoint')
     depends_on('firedrake.py-pyop2')
@@ -120,11 +156,11 @@ class PyFiredrake(PythonPackage):
         config = FiredrakeConfiguration()
         config['options'] = {
             'cache_dir':          '{}/.cache'.format(self.prefix),
-            'complex':            False,
+            'complex':            '+complex' in self.spec,
             'disable_ssh':        False,
             'honour_petsc_dir':   True,
             'honour_pythonpath':  False,
-            'minimal_petsc':      False,
+            'minimal_petsc':      '+minimal-petsc' in self.spec,
             'mpicc':              '{}/mpicc'.format(self.spec['mpi'].prefix.bin),
             'mpicxx':             '{}/mpicxx'.format(self.spec['mpi'].prefix.bin),
             'mpiexec':            '{}/mpiexec'.format(self.spec['mpi'].prefix.bin),
@@ -132,12 +168,12 @@ class PyFiredrake(PythonPackage):
             'opencascade':        False,
             'package_manager':    False,
             'packages':           [],
-            'petsc_int_type':     'int32',
+            'petsc_int_type':     ('int64' if '+int64' in self.spec['petsc'] else 'int32'),
             'remove_build_files': False,
-            'slepc':              False,
+            'slepc':              '+slepc' in self.spec,
             'tinyasm':            False,
-            'with_blas':          None,
-            'with_parmetis':      False
+            'with_blas':          self.spec['blas'].prefix.lib,
+            'with_parmetis':      '+parmetis' in self.spec['petsc']
         }
         print('self.prefix:', self.prefix)
         print('self.spec.prefix:', self.spec.prefix)
