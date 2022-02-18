@@ -2,7 +2,6 @@
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
-
 from spack import *
 
 
@@ -71,8 +70,7 @@ class PyVtk(CMakePackage):
         ]
         return args
 
-    def install(self, spec, prefix):
+    @run_after('install')
+    def pip_install(self):
         with working_dir(self.build_directory):
-            python = which('python')
-            python('setup.py', 'install')
-
+            pip('install', '--prefix={}'.format(prefix), '.')
