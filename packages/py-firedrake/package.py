@@ -74,6 +74,7 @@ class PyFiredrake(PythonPackage):
 
     # External dependencies
     depends_on('eigen@3.3.3')
+    depends_on('libspatialindex')
     depends_on('mpi')
     # depends_on('mpich', when='+mpich')
     depends_on('py-pip', type=('build', 'run'))
@@ -117,7 +118,6 @@ class PyFiredrake(PythonPackage):
     depends_on('firedrake.petsc@develop' + real, when='~complex')
     depends_on('firedrake.petsc@develop' + int32, when='~64-bit-indices')
 
-    depends_on('firedrake.libspatialindex')
     depends_on('firedrake.py-fiat')
     depends_on('firedrake.py-finat')
     depends_on('firedrake.py-petsc4py')
