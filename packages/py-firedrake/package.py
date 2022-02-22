@@ -82,7 +82,9 @@ class PyFiredrake(PythonPackage):
     depends_on('py-h5py')
     depends_on('py-matplotlib')
     depends_on('py-mpi4py')
-    depends_on('py-numpy ^openblas@:0.3.13')
+    depends_on('py-numpy')
+    # ~ if openblas in self.spec:
+    depends_on('py-numpy ^openblas@:0.3.13', when='openblas')
     depends_on('py-pkgconfig')
     depends_on('py-requests')
     depends_on('py-scipy')
@@ -129,9 +131,7 @@ class PyFiredrake(PythonPackage):
     # Test dependencies
     depends_on('py-pytest', type='test')
     depends_on('py-pytest-xdist', type='test')
-
-    # Make Firedrake configuration not depend on firedrake-install
-    # ~ patch('config.patch')
+    # ~ depends_on('py-nbval', type='test')  # Package doesn't exist
 
     phases = ['install']
 
