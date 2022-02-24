@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 import json
+import os
 
 from spack import *
 
@@ -89,6 +90,11 @@ class PyFiredrake(PythonPackage):
     depends_on('py-pkgconfig')
     depends_on('py-requests')
     depends_on('py-scipy')
+    with when('%intel'):
+        # Pythran cannot currently use intel compilers
+        # https://github.com/serge-sans-paille/pythran/issues/892
+        # The py-scipy package.py doesn't have a flag to turn this off either!
+        os.environ['SCIPY_USE_PYTHRAN'] = '0'
     depends_on('py-setuptools')
     depends_on('py-sympy')
 
