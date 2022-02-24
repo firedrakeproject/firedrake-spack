@@ -195,7 +195,7 @@ class PyFiredrake(PythonPackage):
             json.dump(config, fh)
 
     def setup_run_environment(self, env):
-        env.set('OMP_NUM_THREADS', 1)
-        env.set('OPENBLAS_NUM_THREADS', 1)
+        env.set('OMP_NUM_THREADS', '1')
+        env.set('OPENBLAS_NUM_THREADS', '1')
         env.set('PETSC_DIR', self.spec['petsc'].prefix)
         env.unset('PETSC_ARCH')
