@@ -37,3 +37,9 @@ class PyPyop2(PythonPackage):
                 python('setup.py', 'develop', '--prefix={}'.format(prefix))
             else:
                 python('setup.py', 'install', '--prefix={}'.format(prefix))
+
+    def setup_run_environment(self, env):
+        if self.spec.satisfies('%intel'):
+            env.set('PYOP2_BACKEND_COMPILER', 'icc')
+        if self.spec.satisfies('%clang'):
+            env.set('PYOP2_BACKEND_COMPILER', 'clang')

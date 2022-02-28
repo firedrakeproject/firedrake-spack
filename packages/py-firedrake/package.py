@@ -6,7 +6,11 @@
 import json
 import os
 
+from collections import namedtuple
 from spack import *
+
+fields = ['mpicc', 'mpicxx', 'mpif90', 'mpiexec']
+MPI = namedtuple('MPI', fields, defaults=fields)
 
 class FiredrakeConfiguration(dict):
     """A dictionary extended to facilitate the storage of Firedrake
@@ -142,12 +146,6 @@ class PyFiredrake(PythonPackage):
     phases = ['install']
 
     def install(self, spec, prefix):
-        print('INSTALL')
-        print('prefix:', prefix)
-        try:
-            print('spec.devpath', spec.devpath)
-        except:
-            pass
         # Do an editable install if `spack develop firedrake` has been run.
         with working_dir(self.build_directory):
             python = which('python')
@@ -158,8 +156,11 @@ class PyFiredrake(PythonPackage):
 
     @run_before('install')
     def generate_config_file(self):
-        print('BEFORE INSTALL')
         config = FiredrakeConfiguration()
+        if self.spec.satisfies('%intel'):
+            mpi = MPI('mpiicc', 'mpiicpc', 'mpiifort')
+        else:
+            mpi = MPI()
         config['options'] = {
             'cache_dir':          '{}/.cache'.format(self.prefix),
             'complex':            '+complex' in self.spec,
@@ -167,10 +168,10 @@ class PyFiredrake(PythonPackage):
             'honour_petsc_dir':   True,
             'honour_pythonpath':  False,
             'minimal_petsc':      '+minimal-petsc' in self.spec,
-            'mpicc':              '{}/mpicc'.format(self.spec['mpi'].prefix.bin),
-            'mpicxx':             '{}/mpicxx'.format(self.spec['mpi'].prefix.bin),
-            'mpiexec':            '{}/mpiexec'.format(self.spec['mpi'].prefix.bin),
-            'mpif90':             '{}/mpif90'.format(self.spec['mpi'].prefix.bin),
+            'mpicc':              '{0}/{1}'.format(self.spec['mpi'].prefix.bin, mpi.mpicc),
+            'mpicxx':             '{0}/{1}'.format(self.spec['mpi'].prefix.bin, mpi.mpicxx),
+            'mpiexec':            '{0}/{1}'.format(self.spec['mpi'].prefix.bin, mpi.mpiexec),
+            'mpif90':             '{0}/{1}'.format(self.spec['mpi'].prefix.bin, mpi.mpif90),
             'opencascade':        False,
             'package_manager':    False,
             'packages':           [],
@@ -181,10 +182,6 @@ class PyFiredrake(PythonPackage):
             'with_blas':          self.spec['blas'].prefix.lib,
             'with_parmetis':      '+parmetis' in self.spec['petsc']
         }
-        print('self.prefix:', self.prefix)
-        print('self.spec.prefix:', self.spec.prefix)
-        print(self.spec.variants)
-        print('self.spec.variants[\'dev_path\'].value:', self.spec.variants['dev_path'].value)
         if 'dev_path' in self.spec.variants:
             config_file = '{}/firedrake_configuration/configuration.json'.format(self.spec.variants['dev_path'].value)
         else:
@@ -199,3 +196,7 @@ class PyFiredrake(PythonPackage):
         env.set('OPENBLAS_NUM_THREADS', '1')
         env.set('PETSC_DIR', self.spec['petsc'].prefix)
         env.unset('PETSC_ARCH')
+        if self.spec.satisfies('%intel'):
+            env.set('PYOP2_BACKEND_COMPILER', 'icc')
+        if self.spec.satisfies('%clang'):
+            env.set('PYOP2_BACKEND_COMPILER', 'clang')
