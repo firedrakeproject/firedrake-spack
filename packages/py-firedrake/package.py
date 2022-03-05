@@ -7,6 +7,7 @@ import json
 import os
 
 from collections import namedtuple
+from pathlib import Path
 from spack import *
 
 fields = ['mpicc', 'mpicxx', 'mpif90', 'mpiexec']
@@ -146,7 +147,7 @@ class PyFiredrake(PythonPackage):
     phases = ['install']
 
     def install(self, spec, prefix):
-        # Do an editable install if `spack develop firedrake` has been run.
+        # Do an editable install if `spack develop py-firedrake` has been run.
         with working_dir(self.build_directory):
             python = which('python')
             if 'dev_path' in self.spec.variants:
@@ -158,8 +159,12 @@ class PyFiredrake(PythonPackage):
     def generate_config_file(self):
         config = FiredrakeConfiguration()
         if self.spec.satisfies('%intel'):
+            # It's difficult to pick out the Intel mpi compilers
+            # We do it manually here
+            mpi_prefix = Path(self.spec['mpi'].mpicc).parent
             mpi = MPI('mpiicc', 'mpiicpc', 'mpiifort')
         else:
+            mpi_prefix = self.spec['mpi'].prefix.bin
             mpi = MPI()
         config['options'] = {
             'cache_dir':          '{}/.cache'.format(self.prefix),
@@ -168,10 +173,10 @@ class PyFiredrake(PythonPackage):
             'honour_petsc_dir':   True,
             'honour_pythonpath':  False,
             'minimal_petsc':      '+minimal-petsc' in self.spec,
-            'mpicc':              '{0}/{1}'.format(self.spec['mpi'].prefix.bin, mpi.mpicc),
-            'mpicxx':             '{0}/{1}'.format(self.spec['mpi'].prefix.bin, mpi.mpicxx),
-            'mpiexec':            '{0}/{1}'.format(self.spec['mpi'].prefix.bin, mpi.mpiexec),
-            'mpif90':             '{0}/{1}'.format(self.spec['mpi'].prefix.bin, mpi.mpif90),
+            'mpicc':              str(mpi_prefix.joinpath(mpi.mpicc)),
+            'mpicxx':             str(mpi_prefix.joinpath(mpi.mpicxx)),
+            'mpiexec':            str(mpi_prefix.joinpath(mpi.mpiexec)),
+            'mpif90':             str(mpi_prefix.joinpath(mpi.mpif90)),
             'opencascade':        False,
             'package_manager':    False,
             'packages':           [],
@@ -196,7 +201,14 @@ class PyFiredrake(PythonPackage):
         env.set('OPENBLAS_NUM_THREADS', '1')
         env.set('PETSC_DIR', self.spec['petsc'].prefix)
         env.unset('PETSC_ARCH')
+
+        # Needs upstream changes in PYOP2:
         if self.spec.satisfies('%intel'):
-            env.set('PYOP2_BACKEND_COMPILER', 'icc')
+            mpi_prefix = Path(self.spec['mpi'].mpicc).parent
+            env.set('PYOP2_BACKEND_COMPILER', str(mpi_prefix.joinpath(mpi.mpicc)))
+            env.set('PYOP2_CC', str(mpi_prefix.joinpath(mpi.mpicc)))
+            env.set('PYOP2_CXX', str(mpi_prefix.joinpath(mpi.mpicxx)))
         if self.spec.satisfies('%clang'):
             env.set('PYOP2_BACKEND_COMPILER', 'clang')
+            env.set('PYOP2_CC', str(self.spec['mpi'].mpicc))
+            env.set('PYOP2_CXX', str(self.spec['mpi'].mpicxx))
