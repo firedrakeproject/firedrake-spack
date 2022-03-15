@@ -164,7 +164,7 @@ class PyFiredrake(PythonPackage):
             mpi_prefix = Path(self.spec['mpi'].mpicc).parent
             mpi = MPI('mpiicc', 'mpiicpc', 'mpiifort')
         else:
-            mpi_prefix = self.spec['mpi'].prefix.bin
+            mpi_prefix = Path(self.spec['mpi'].prefix.bin)
             mpi = MPI()
         config['options'] = {
             'cache_dir':          '{}/.cache'.format(self.prefix),
