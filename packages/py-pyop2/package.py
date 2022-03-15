@@ -12,7 +12,7 @@ class PyPyop2(PythonPackage):
     url      = 'https://github.com/OP2/PyOP2'
     git      = 'https://github.com/OP2/PyOP2'
 
-    version('develop', branch='master', no_cache=True)
+    version('develop', branch='master', get_full_repo=True, no_cache=True)
 
     phases = ['install']
 
@@ -30,10 +30,23 @@ class PyPyop2(PythonPackage):
     depends_on('firedrake.py-loopy')
 
     def install(self, spec, prefix):
-        # Do an editable install if `spack develop firedrake` has been run.
+        # Do an editable install if `spack develop py-pyop2` has been run.
         with working_dir(self.build_directory):
             python = which('python')
             if 'dev_path' in self.spec.variants:
                 python('setup.py', 'develop', '--prefix={}'.format(prefix))
             else:
                 python('setup.py', 'install', '--prefix={}'.format(prefix))
+
+    def setup_run_environment(self, env):
+        # Needs upstream changes in PYOP2:
+        if self.spec.satisfies('%intel'):
+            mpi_prefix = Path(self.spec['mpi'].mpicc).parent
+            env.set('PYOP2_BACKEND_COMPILER', str(mpi_prefix.joinpath(mpi.mpicc)))
+            env.set('PYOP2_CC', str(mpi_prefix.joinpath(mpi.mpicc)))
+            env.set('PYOP2_CXX', str(mpi_prefix.joinpath(mpi.mpicxx)))
+        if self.spec.satisfies('%clang'):
+            env.set('PYOP2_BACKEND_COMPILER', 'clang')
+            env.set('PYOP2_CC', str(self.spec['mpi'].mpicc))
+            env.set('PYOP2_CXX', str(self.spec['mpi'].mpicxx))
+            env.set('PYOP2_LD', str(self.spec['llvm'].bin) + '/ld.lld')
