@@ -205,10 +205,9 @@ class PyFiredrake(PythonPackage):
         # Needs upstream changes in PYOP2:
         if self.spec.satisfies('%intel'):
             mpi_prefix = Path(self.spec['mpi'].mpicc).parent
-            env.set('PYOP2_BACKEND_COMPILER', str(mpi_prefix.joinpath(mpi.mpicc)))
             env.set('PYOP2_CC', str(mpi_prefix.joinpath(mpi.mpicc)))
             env.set('PYOP2_CXX', str(mpi_prefix.joinpath(mpi.mpicxx)))
         if self.spec.satisfies('%clang'):
-            env.set('PYOP2_BACKEND_COMPILER', 'clang')
             env.set('PYOP2_CC', str(self.spec['mpi'].mpicc))
             env.set('PYOP2_CXX', str(self.spec['mpi'].mpicxx))
+            env.set('PYOP2_LD', str(self.spec['llvm'].bin) + '/ld.lld')

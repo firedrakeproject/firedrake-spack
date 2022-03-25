@@ -19,7 +19,7 @@ class PyPyop2(PythonPackage):
     depends_on('py-setuptools', type='build')
     depends_on('py-pytest', type='build')
     depends_on('py-flake8', type='build')
-    depends_on('py-decorator')
+    depends_on('py-decorator@4.4.2')
     depends_on('py-cython')
     depends_on('py-numpy')
     depends_on('py-mpi4py')
@@ -42,11 +42,9 @@ class PyPyop2(PythonPackage):
         # Needs upstream changes in PYOP2:
         if self.spec.satisfies('%intel'):
             mpi_prefix = Path(self.spec['mpi'].mpicc).parent
-            env.set('PYOP2_BACKEND_COMPILER', str(mpi_prefix.joinpath(mpi.mpicc)))
             env.set('PYOP2_CC', str(mpi_prefix.joinpath(mpi.mpicc)))
             env.set('PYOP2_CXX', str(mpi_prefix.joinpath(mpi.mpicxx)))
         if self.spec.satisfies('%clang'):
-            env.set('PYOP2_BACKEND_COMPILER', 'clang')
             env.set('PYOP2_CC', str(self.spec['mpi'].mpicc))
             env.set('PYOP2_CXX', str(self.spec['mpi'].mpicxx))
             env.set('PYOP2_LD', str(self.spec['llvm'].bin) + '/ld.lld')
