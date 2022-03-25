@@ -65,12 +65,12 @@ class Chaco(MakefilePackage):
 
     def build(self, spec, prefix):
         with working_dir('code'):
-            mkdir('../bin')
+            mkdirp('../bin')
             make()
 
             if self.spec.version == Version('petsc'):
                 # See https://gitlab.com/petsc/petsc/-/blob/main/config/BuildSystem/config/packages/Chaco.py
-                mkdir('../lib')
+                mkdirp('../lib')
                 cwd = Path()
                 object_list = [str(ofile.relative_to(cwd.absolute()))
                                for ofile in cwd.cwd().glob('*/*.o')]
