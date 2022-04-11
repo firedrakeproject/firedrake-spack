@@ -47,4 +47,4 @@ class PyPyop2(PythonPackage):
         if self.spec.satisfies('%clang'):
             env.set('PYOP2_CC', str(self.spec['mpi'].mpicc))
             env.set('PYOP2_CXX', str(self.spec['mpi'].mpicxx))
-            env.set('PYOP2_LD', str(self.spec['llvm'].bin) + '/ld.lld')
+            env.set('PYOP2_LD', 'ld.lld')
