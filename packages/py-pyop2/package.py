@@ -2,10 +2,15 @@
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
+import inspect
+import os
 
 from spack import *
+from spack.pkg.firedrake.editable_install import EditablePythonPackage
+from pathlib import Path
 
-class PyPyop2(PythonPackage):
+
+class PyPyop2(EditablePythonPackage):
     '''Framework for performance-portable parallel computations on unstructured meshes'''
 
     homepage = 'https://op2.github.io/PyOP2'
@@ -30,20 +35,20 @@ class PyPyop2(PythonPackage):
     depends_on('firedrake.py-loopy')
 
     def install(self, spec, prefix):
-        # Do an editable install if `spack develop py-pyop2` has been run.
-        with working_dir(self.build_directory):
-            python = which('python')
-            if 'dev_path' in self.spec.variants:
-                python('setup.py', 'develop', '--prefix={}'.format(prefix))
-            else:
-                python('setup.py', 'install', '--prefix={}'.format(prefix))
+        # Set CC to an MPI compiler
+        if self.spec.satisfies('%intel'):
+            mpi_prefix = Path(self.spec['mpi'].mpicc).parent
+            env['CC'] = mpi_prefix.joinpath('mpiicc')
+        else:
+            env['CC'] = spec['mpi'].mpicc
+        super().install(spec, prefix)
 
     def setup_run_environment(self, env):
         # Needs upstream changes in PYOP2:
         if self.spec.satisfies('%intel'):
             mpi_prefix = Path(self.spec['mpi'].mpicc).parent
-            env.set('PYOP2_CC', str(mpi_prefix.joinpath(mpi.mpicc)))
-            env.set('PYOP2_CXX', str(mpi_prefix.joinpath(mpi.mpicxx)))
+            env.set('PYOP2_CC', str(mpi_prefix.joinpath('mpiicc')))
+            env.set('PYOP2_CXX', str(mpi_prefix.joinpath('mpiicpc')))
         if self.spec.satisfies('%clang'):
             env.set('PYOP2_CC', str(self.spec['mpi'].mpicc))
             env.set('PYOP2_CXX', str(self.spec['mpi'].mpicxx))

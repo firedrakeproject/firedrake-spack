@@ -4,9 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
-class PyPyadjoint(PythonPackage):
+class PyPyadjoint(EditablePythonPackage):
     '''The algorithmic differentation tool pyadjoint and add-ons.'''
 
     homepage = 'https://firedrakeproject.org'

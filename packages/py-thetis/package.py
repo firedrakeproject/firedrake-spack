@@ -4,14 +4,15 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
-class PyThetis(PythonPackage):
+class PyThetis(EditablePythonPackage):
     '''Finite element flow solver for simulating coastal and estuarine flows.'''
 
     homepage = 'https://thetisproject.org/'
     git      = 'https://github.com/thetisproject/thetis'
-    
+
     version('develop', branch='master', no_cache=True)
 
     depends_on('py-firedrake')

@@ -4,14 +4,15 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
-class PyIcepack(PythonPackage):
+class PyIcepack(EditablePythonPackage):
     '''Finite element modeling of glaciers and ice sheets.'''
 
     homepage = 'https://icepack.github.io/'
     git      = 'https://github.com/icepack/icepack/'
-    
+
     version('develop', branch='master', no_cache=True)
 
     depends_on('py-firedrake')
@@ -28,3 +29,4 @@ class PyIcepack(PythonPackage):
     depends_on('py-setuptools', type='build')
     depends_on('py-shapely')
     depends_on('py-tqdm')
+

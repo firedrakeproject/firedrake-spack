@@ -9,9 +9,10 @@ import os
 from collections import namedtuple
 from pathlib import Path
 from spack import *
+from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 fields = ['mpicc', 'mpicxx', 'mpif90', 'mpiexec']
-MPI = namedtuple('MPI', fields, defaults=fields)
+MPI = namedtuple('MPI', fields)
 
 class FiredrakeConfiguration(dict):
     """A dictionary extended to facilitate the storage of Firedrake
@@ -39,7 +40,7 @@ class FiredrakeConfiguration(dict):
                            "petsc_int_type", "cache_dir", "complex", "remove_build_files", "with_blas"]
 
 
-class PyFiredrake(PythonPackage):
+class PyFiredrake(EditablePythonPackage):
     '''Firedrake is an automated system for the portable solution of partial
     differential equations using the finite element method (FEM)'''
 
@@ -147,13 +148,13 @@ class PyFiredrake(PythonPackage):
     phases = ['install']
 
     def install(self, spec, prefix):
-        # Do an editable install if `spack develop py-firedrake` has been run.
-        with working_dir(self.build_directory):
-            python = which('python')
-            if 'dev_path' in self.spec.variants:
-                python('setup.py', 'develop', '--prefix={}'.format(prefix))
-            else:
-                python('setup.py', 'install', '--prefix={}'.format(prefix))
+        # Set CC to an MPI compiler
+        if self.spec.satisfies('%intel'):
+            mpi_prefix = Path(self.spec['mpi'].mpicc).parent
+            env['CC'] = mpi_prefix.joinpath('mpiicc')
+        else:
+            env['CC'] = spec['mpi'].mpicc
+        super().install(spec, prefix)
 
     @run_before('install')
     def generate_config_file(self):
@@ -165,7 +166,7 @@ class PyFiredrake(PythonPackage):
             mpi = MPI('mpiicc', 'mpiicpc', 'mpiifort')
         else:
             mpi_prefix = Path(self.spec['mpi'].prefix.bin)
-            mpi = MPI()
+            mpi = MPI(*fields)
         config['options'] = {
             'cache_dir':          '{}/.cache'.format(self.prefix),
             'complex':            '+complex' in self.spec,
@@ -205,8 +206,8 @@ class PyFiredrake(PythonPackage):
         # Needs upstream changes in PYOP2:
         if self.spec.satisfies('%intel'):
             mpi_prefix = Path(self.spec['mpi'].mpicc).parent
-            env.set('PYOP2_CC', str(mpi_prefix.joinpath(mpi.mpicc)))
-            env.set('PYOP2_CXX', str(mpi_prefix.joinpath(mpi.mpicxx)))
+            env.set('PYOP2_CC', str(mpi_prefix.joinpath('mpiicc')))
+            env.set('PYOP2_CXX', str(mpi_prefix.joinpath('mpiicpc')))
         if self.spec.satisfies('%clang'):
             env.set('PYOP2_CC', str(self.spec['mpi'].mpicc))
             env.set('PYOP2_CXX', str(self.spec['mpi'].mpicxx))

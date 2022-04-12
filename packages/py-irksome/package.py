@@ -4,15 +4,17 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
-class PyIrksome(PythonPackage):
+class PyIrksome(EditablePythonPackage):
     '''Solvers for Implicit Runge Kutta methods'''
 
     homepage = 'https://firedrakeproject.github.io/Irksome/'
     git      = 'https://github.com/firedrakeproject/Irksome/'
-    
+
     version('develop', branch='master', no_cache=True)
 
     depends_on('py-firedrake')
     depends_on('py-setuptools', type='build')
+

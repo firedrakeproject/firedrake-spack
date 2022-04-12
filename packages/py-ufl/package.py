@@ -4,9 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
-class PyUfl(PythonPackage):
+class PyUfl(EditablePythonPackage):
     '''UFL - Unified Form Language'''
 
     homepage = 'https://fenicsproject.org/'
@@ -14,7 +15,8 @@ class PyUfl(PythonPackage):
     git      = 'https://github.com/firedrakeproject/ufl'
 
     version('develop', branch='master', no_cache=True)
-    
+
     depends_on('py-setuptools', type='build')
     depends_on('py-numpy', type=('build','run'))
     depends_on('py-six', type=('build','run'))
+

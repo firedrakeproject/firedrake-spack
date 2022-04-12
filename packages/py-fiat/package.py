@@ -4,8 +4,9 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
-class PyFiat(PythonPackage):
+class PyFiat(EditablePythonPackage):
     '''FIAT: FInite element Automatic Tabulator'''
 
     homepage = 'https://fenicsproject.org/'

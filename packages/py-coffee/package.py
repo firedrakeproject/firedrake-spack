@@ -4,17 +4,18 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
-class PyCoffee(PythonPackage):
+class PyCoffee(EditablePythonPackage):
     '''COFFEE - A COmpiler For Fast Expression Evaluation'''
 
     homepage = 'https://github.com/coneoproject/COFFEE'
     url      = 'https://github.com/coneoproject/COFFEE'
     git      = 'https://github.com/coneoproject/COFFEE'
-    
+
     version('develop', branch='master')
-    
+
     depends_on('py-setuptools', type='build')
     depends_on('py-pulp')
     depends_on('py-numpy')
