@@ -2,6 +2,7 @@ import inspect
 from spack import *
 from spack.package import PackageBase
 
+
 class EditablePythonPackage(PythonPackage):
     def install(self, spec, prefix):
         '''Perform an editable install if `spack develop package` has been run.
@@ -15,6 +16,11 @@ class EditablePythonPackage(PythonPackage):
                 pip(*args)
             else:
                 super().install(spec, prefix)
+
+    def setup_dependent_run_environment(self, env, dependent_spec):
+        if 'dev_path' in self.spec.variants:
+            env.append_path('PYTHONPATH', self.spec.variants['dev_path'].value)
+
 
 class EditableInstall(PackageBase):
     '''Dummy package, we don't actually want to install this!

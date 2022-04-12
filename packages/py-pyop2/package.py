@@ -44,6 +44,8 @@ class PyPyop2(EditablePythonPackage):
         super().install(spec, prefix)
 
     def setup_run_environment(self, env):
+        env.set('PYOP2_SECRET', 'PYOP2 is not a secret')
+
         # Needs upstream changes in PYOP2:
         if self.spec.satisfies('%intel'):
             mpi_prefix = Path(self.spec['mpi'].mpicc).parent
@@ -53,3 +55,7 @@ class PyPyop2(EditablePythonPackage):
             env.set('PYOP2_CC', str(self.spec['mpi'].mpicc))
             env.set('PYOP2_CXX', str(self.spec['mpi'].mpicxx))
             env.set('PYOP2_LD', str(self.spec['llvm'].bin) + '/ld.lld')
+
+    def setup_dependent_run_environment(self, env, dependent_spec):
+        super().setup_dependent_run_environment(env, dependent_spec)
+        self.setup_run_environment(env)
