@@ -15,8 +15,8 @@ fields = ['mpicc', 'mpicxx', 'mpif90', 'mpiexec']
 MPI = namedtuple('MPI', fields)
 
 class FiredrakeConfiguration(dict):
-    """A dictionary extended to facilitate the storage of Firedrake
-    configuration information."""
+    '''A dictionary extended to facilitate the storage of Firedrake
+    configuration information.'''
     def __init__(self, args=None):
         super(FiredrakeConfiguration, self).__init__()
 
@@ -52,9 +52,6 @@ class PyFiredrake(EditablePythonPackage):
     version('develop', branch='master', get_full_repo=True, no_cache=True)
 
     # Variants
-    # ~ variant('slepc', default=False,
-            # ~ description='Install SLEPc along with PETSc')
-    # ~ variant('mpich', default=True, description='Use MPICH as MPI provider')
     variant(
         'minimal-petsc',
         default=False,
@@ -83,7 +80,6 @@ class PyFiredrake(EditablePythonPackage):
     depends_on('eigen@3.3.3')
     depends_on('libspatialindex')
     depends_on('mpi')
-    # depends_on('mpich', when='+mpich')
     depends_on('py-pip', type=('build', 'run'))
     depends_on('py-cachetools')
     depends_on('py-cython', type=('build', 'run'))
@@ -91,7 +87,6 @@ class PyFiredrake(EditablePythonPackage):
     depends_on('py-matplotlib')
     depends_on('py-mpi4py')
     depends_on('py-numpy')
-    # ~ if openblas in self.spec:
     depends_on('py-numpy ^openblas@:0.3.13', when='openblas')
     depends_on('py-pkgconfig')
     depends_on('py-requests')
@@ -137,13 +132,13 @@ class PyFiredrake(EditablePythonPackage):
     depends_on('firedrake.py-pyop2')
     depends_on('firedrake.py-tsfc')
     depends_on('firedrake.py-ufl')
-    # VTK is a pain to build in Spack so we just use the wheel ~on PyPI~ locally
+    # VTK is a pain to build in Spack so we build a minimal wheel locally
     depends_on('firedrake.py-vtk')
 
     # Test dependencies
     depends_on('py-pytest', type='test')
     depends_on('py-pytest-xdist', type='test')
-    # ~ depends_on('py-nbval', type='test')  # Package doesn't exist
+    # ~ depends_on('py-nbval', type='test')  # Package doesn't yet exist
 
     phases = ['install']
 
