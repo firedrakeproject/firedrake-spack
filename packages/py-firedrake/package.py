@@ -154,8 +154,9 @@ class PyFiredrake(EditablePythonPackage):
     @run_before('install')
     def generate_config_file(self):
         config = FiredrakeConfiguration()
-        if self.spec.satisfies('%intel'):
-            # It's difficult to pick out the Intel mpi compilers
+        if self.spec.satisfies('^intel-oneapi-mpi') or \
+            self.spec.satisfies('^intel-mpi'):
+            # It's difficult to pick out the Intel MPI compilers
             # We do it manually here
             mpi_prefix = Path(self.spec['mpi'].mpicc).parent
             mpi = MPI('mpiicc', 'mpiicpc', 'mpiifort')
