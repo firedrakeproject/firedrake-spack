@@ -17,6 +17,10 @@ class EditablePythonPackage(PythonPackage):
             else:
                 super().install(spec, prefix)
 
+    def setup_run_environment(self, env):
+        if 'dev_path' in self.spec.variants:
+            env.append_path('PYTHONPATH', self.spec.variants['dev_path'].value)
+
     def setup_dependent_run_environment(self, env, dependent_spec):
         if 'dev_path' in self.spec.variants:
             env.append_path('PYTHONPATH', self.spec.variants['dev_path'].value)

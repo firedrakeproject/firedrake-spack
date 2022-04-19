@@ -194,6 +194,7 @@ class PyFiredrake(EditablePythonPackage):
             json.dump(config, fh)
 
     def setup_run_environment(self, env):
+        super().setup_run_environment(env)
         env.set('OMP_NUM_THREADS', '1')
         env.set('OPENBLAS_NUM_THREADS', '1')
 

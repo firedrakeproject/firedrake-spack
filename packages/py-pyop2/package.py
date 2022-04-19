@@ -47,6 +47,7 @@ class PyPyop2(EditablePythonPackage):
         super().install(spec, prefix)
 
     def setup_run_environment(self, env):
+        super().setup_run_environment(env)
         if self.spec.satisfies('%intel') and \
             self.spec.satisfies('^intel-mpi'):
             mpi_prefix = Path(self.spec['mpi'].mpicc).parent
