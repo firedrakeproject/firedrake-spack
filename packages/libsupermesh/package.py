@@ -19,6 +19,10 @@ class Libsupermesh(CMakePackage):
 
     depends_on('mpi')
 
+    # It's not clear at what point the -s flag to the Cray compiler changed
+    # if we can identify this we should add version specifiers to cce
+    patch('crayftn.patch', when='%cce')
+
     def cmake_args(self):
         args = []
         if '+shared' in self.spec:

@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 75f7a26..250b9ae 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -86,7 +86,7 @@ if(LIBSUPERMESH_AUTO_COMPILER_FLAGS)
+     set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g -Wall -fcheck=all -ffpe-trap=invalid,zero,overflow,underflow -finit-integer=-66666 -finit-real=nan -fimplicit-none")
+     set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -march=native -ftree-vectorize -DNDEBUG")
+   elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Cray")
+-    set(CMAKE_Fortran_FLAGS "-s -fpic")
++    set(CMAKE_Fortran_FLAGS "-fpic")
+     set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g")
+     set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
+   endif()
