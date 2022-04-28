@@ -70,7 +70,15 @@ class Petsc(OrigPetsc):
                 '--with-eigen=1',
                 '--with-eigen-dir={}'.format(self.spec['eigen'].prefix)
             ]
-
+        # If 'cflags', 'fflags', and/or 'cxxflags' are set by the compiler
+        # remove them from the PETSc configure options. Certain flags
+        # cannot be duplicated eg: --eliminate-similar-expr
+        remove_option = ['CFLAGS', 'CXXFLAGS', 'FFLAGS']
+        new_options = []
+        for opt in options:
+            if not any(opt.startswith(rem) for rem in remove_option):
+                new_options.append(opt)
+        options = new_options
         return options
 
     # Some spack bug
