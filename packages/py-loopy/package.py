@@ -16,7 +16,7 @@ class PyLoopy(EditablePythonPackage):
 
     version('develop', branch='main', submodules=True, no_cache=True)
 
-    depends_on('py-setuptools', , type=('build', 'run'))
+    depends_on('py-setuptools', type=('build', 'run'))
     depends_on('py-pymbolic', type=('build', 'run'))
     depends_on('py-cgen', type=('build', 'run'))
     depends_on('py-genpy', type=('build', 'run'))

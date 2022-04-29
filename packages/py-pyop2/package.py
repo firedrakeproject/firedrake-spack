@@ -23,7 +23,7 @@ class PyPyop2(EditablePythonPackage):
 
     depends_on('mpi')
 
-    depends_on('py-setuptools', , type=('build', 'run'))
+    depends_on('py-setuptools', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run', 'test'))
     depends_on('py-flake8', type=('build', 'run', 'test'))
     depends_on('py-decorator@4.4.2', type=('build', 'run'))
