@@ -15,7 +15,7 @@ class PyIslpy(PythonPackage):
 
     version('develop', branch='main', submodules=True )
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-pytest')
-    depends_on('py-cffi')
-    depends_on('py-six')
+    depends_on('py-setuptools', type=('build', 'run'))
+    depends_on('py-pytest', type=('build', 'run'))
+    depends_on('py-cffi', type=('build', 'run'))
+    depends_on('py-six', type=('build', 'run'))

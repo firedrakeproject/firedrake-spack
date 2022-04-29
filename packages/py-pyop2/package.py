@@ -23,18 +23,18 @@ class PyPyop2(EditablePythonPackage):
 
     depends_on('mpi')
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-pytest', type='build')
-    depends_on('py-flake8', type='build')
-    depends_on('py-decorator@4.4.2')
-    depends_on('py-cython')
-    depends_on('py-numpy')
-    depends_on('py-mpi4py')
+    depends_on('py-setuptools', , type=('build', 'run'))
+    depends_on('py-pytest', type=('build', 'run', 'test'))
+    depends_on('py-flake8', type=('build', 'run', 'test'))
+    depends_on('py-decorator@4.4.2', type=('build', 'run'))
+    depends_on('py-cython', type=('build', 'run'))
+    depends_on('py-numpy', type=('build', 'run'))
+    depends_on('py-mpi4py', type=('build', 'run'))
 
-    depends_on('firedrake.petsc')
-    depends_on('firedrake.py-petsc4py')
-    depends_on('firedrake.py-coffee')
-    depends_on('firedrake.py-loopy')
+    depends_on('firedrake.petsc', type=('build', 'link', 'run'))
+    depends_on('firedrake.py-petsc4py', type=('build', 'run'))
+    depends_on('firedrake.py-coffee', type=('build', 'run'))
+    depends_on('firedrake.py-loopy', type=('build', 'run'))
 
     def install(self, spec, prefix):
         # Set CC to an MPI compiler

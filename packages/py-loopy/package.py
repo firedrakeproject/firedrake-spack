@@ -16,15 +16,15 @@ class PyLoopy(EditablePythonPackage):
 
     version('develop', branch='main', submodules=True, no_cache=True)
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-pymbolic')
-    depends_on('py-cgen')
-    depends_on('py-genpy')
-    depends_on('py-codepy')
-    depends_on('py-mako')
-    depends_on('py-islpy')
-    depends_on('py-pyrsistent')
-    depends_on('py-ply')
+    depends_on('py-setuptools', , type=('build', 'run'))
+    depends_on('py-pymbolic', type=('build', 'run'))
+    depends_on('py-cgen', type=('build', 'run'))
+    depends_on('py-genpy', type=('build', 'run'))
+    depends_on('py-codepy', type=('build', 'run'))
+    depends_on('py-mako', type=('build', 'run'))
+    depends_on('py-islpy', type=('build', 'run'))
+    depends_on('py-pyrsistent', type=('build', 'run'))
+    depends_on('py-ply', type=('build', 'run'))
 
-    depends_on('firedrake.py-pytools')
+    depends_on('firedrake.py-pytools', type=('build', 'run'))
 

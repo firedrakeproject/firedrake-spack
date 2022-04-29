@@ -15,9 +15,9 @@ class PyCodepy(PythonPackage):
 
     version('develop', branch='main')
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-pytools')
-    depends_on('py-numpy')
-    depends_on('py-appdirs')
-    depends_on('py-six')
-    depends_on('py-cgen')
+    depends_on('py-setuptools', type=('build', 'run'))
+    depends_on('py-pytools', type=('build', 'run'))
+    depends_on('py-numpy', type=('build', 'run'))
+    depends_on('py-appdirs', type=('build', 'run'))
+    depends_on('py-six', type=('build', 'run'))
+    depends_on('py-cgen', type=('build', 'run'))

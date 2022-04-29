@@ -74,39 +74,39 @@ class PyFiredrake(EditablePythonPackage):
     )
 
     # Compatible Python versions
-    depends_on('python@3.6:3.10')
+    depends_on('python@3.6:3.10', type=('build', 'link', 'run'))
 
     # External dependencies
-    depends_on('eigen@3.3.3')
-    depends_on('libspatialindex')
-    depends_on('mpi')
+    depends_on('eigen@3.3.3', type=('build', 'link', 'run'))
+    depends_on('libspatialindex', type=('build', 'link', 'run'))
+    depends_on('mpi', type=('build', 'link', 'run'))
     depends_on('py-pip', type=('build', 'run'))
-    depends_on('py-cachetools')
+    depends_on('py-cachetools', type=('build', 'run'))
     depends_on('py-cython', type=('build', 'run'))
-    depends_on('py-h5py')
-    depends_on('py-matplotlib')
-    depends_on('py-mpi4py')
-    depends_on('py-numpy')
-    depends_on('py-numpy ^openblas@:0.3.13', when='openblas')
-    depends_on('py-pkgconfig')
-    depends_on('py-requests')
-    depends_on('py-scipy')
+    depends_on('py-h5py', type=('build', 'run'))
+    depends_on('py-matplotlib', type=('build', 'run'))
+    depends_on('py-mpi4py', type=('build', 'run'))
+    depends_on('py-numpy', type=('build', 'run'))
+    depends_on('py-numpy ^openblas@:0.3.13', when='openblas', type=('build', 'run'))
+    depends_on('py-pkgconfig', type=('build', 'run'))
+    depends_on('py-requests', type=('build', 'run'))
+    depends_on('py-scipy', type=('build', 'run'))
     with when('%intel'):
         # Pythran cannot currently use intel compilers
         # https://github.com/serge-sans-paille/pythran/issues/892
         # The py-scipy package.py doesn't have a flag to turn this off either!
         os.environ['SCIPY_USE_PYTHRAN'] = '0'
-    depends_on('py-setuptools')
-    depends_on('py-sympy')
+    depends_on('py-setuptools', type=('build', 'run'))
+    depends_on('py-sympy', type=('build', 'run'))
 
     # Optional external dependencies
-    depends_on('slepc', when='+slepc')
-    depends_on('py-slepc4py', when='+slepc')
+    depends_on('slepc', when='+slepc', type=('build', 'link', 'run'))
+    depends_on('py-slepc4py', when='+slepc', type=('build', 'run'))
 
     # Future external dependencies
     # (These should be pushed to Spack)
-    depends_on('libsupermesh')
-    depends_on('firedrake.py-islpy')
+    depends_on('libsupermesh', type=('build', 'link', 'run'))
+    depends_on('firedrake.py-islpy', type=('build', 'run'))
 
     # Internal dependencies
     # PETSc
@@ -120,20 +120,20 @@ class PyFiredrake(EditablePythonPackage):
     int32   = ' +mumps +scalapack'
     eigen   = ' ^eigen@3.3.3'
 
-    depends_on('firedrake.petsc@develop' + minimal + eigen)  # (when='minimal-petsc')
-    depends_on('firedrake.petsc@develop' + full, when='~minimal-petsc')
-    depends_on('firedrake.petsc@develop' + real, when='~complex')
-    depends_on('firedrake.petsc@develop' + int32, when='~64-bit-indices')
+    depends_on('firedrake.petsc@develop' + minimal + eigen, type=('build', 'link', 'run'))  # (when='minimal-petsc')
+    depends_on('firedrake.petsc@develop' + full, when='~minimal-petsc', type=('build', 'link', 'run'))
+    depends_on('firedrake.petsc@develop' + real, when='~complex', type=('build', 'link', 'run'))
+    depends_on('firedrake.petsc@develop' + int32, when='~64-bit-indices', type=('build', 'link', 'run'))
 
-    depends_on('firedrake.py-fiat')
-    depends_on('firedrake.py-finat')
-    depends_on('firedrake.py-petsc4py')
-    depends_on('firedrake.py-pyadjoint')
-    depends_on('firedrake.py-pyop2')
-    depends_on('firedrake.py-tsfc')
-    depends_on('firedrake.py-ufl')
+    depends_on('firedrake.py-fiat', type=('build', 'run'))
+    depends_on('firedrake.py-finat', type=('build', 'run'))
+    depends_on('firedrake.py-petsc4py', type=('build', 'run'))
+    depends_on('firedrake.py-pyadjoint', type=('build', 'run'))
+    depends_on('firedrake.py-pyop2', type=('build', 'run'))
+    depends_on('firedrake.py-tsfc', type=('build', 'run'))
+    depends_on('firedrake.py-ufl', type=('build', 'run'))
     # VTK is a pain to build in Spack so we build a minimal wheel locally
-    depends_on('firedrake.py-vtk')
+    depends_on('firedrake.py-vtk', type=('build', 'run'))
 
     # Test dependencies
     depends_on('py-pytest', type='test')

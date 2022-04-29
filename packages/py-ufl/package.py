@@ -16,7 +16,7 @@ class PyUfl(EditablePythonPackage):
 
     version('develop', branch='master', no_cache=True)
 
-    depends_on('py-setuptools', type='build')
+    depends_on('py-setuptools', type=('build', 'run'))
     depends_on('py-numpy', type=('build','run'))
     depends_on('py-six', type=('build','run'))
 

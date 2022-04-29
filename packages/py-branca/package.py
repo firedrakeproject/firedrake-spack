@@ -14,4 +14,4 @@ class PyBranca(PythonPackage):
     version('0.4.2', sha256='c111453617b17ab2bda60a4cd71787d6f2b59c85cdf71ab160a737606ac66c31')
 
     depends_on('py-jinja2', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
+    depends_on('py-setuptools', type=('build', 'run'))

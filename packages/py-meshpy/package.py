@@ -17,5 +17,5 @@ class PyMeshpy(PythonPackage):
     depends_on('python@3.6:', type=('build', 'run'))
     depends_on('py-gmsh-interop', type=('build', 'run'))
     depends_on('py-numpy', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
+    depends_on('py-setuptools', , type=('build', 'run'))
     depends_on('py-pytools@2011.2:', type=('build', 'run'))

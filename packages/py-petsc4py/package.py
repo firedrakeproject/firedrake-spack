@@ -24,9 +24,9 @@ class PyPetsc4py(PythonPackage):
 
     patch('ldshared-dev.patch')
 
-    depends_on('py-cython', type='build')
+    depends_on('py-cython', type=('build', 'run'))
     depends_on('python@2.6:2.8,3.3:', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
+    depends_on('py-setuptools', type=('build', 'run'))
     depends_on('py-numpy', type=('build', 'run'))
     depends_on('py-mpi4py', type=('build', 'run'))
 

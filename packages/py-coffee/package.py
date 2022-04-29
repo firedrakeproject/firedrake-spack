@@ -16,8 +16,8 @@ class PyCoffee(EditablePythonPackage):
 
     version('develop', branch='master')
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-pulp')
-    depends_on('py-numpy')
-    depends_on('py-networkx')
-    depends_on('py-six')
+    depends_on('py-setuptools', type=('build', 'run'))
+    depends_on('py-pulp', type=('build', 'run'))
+    depends_on('py-numpy', type=('build', 'run'))
+    depends_on('py-networkx', type=('build', 'run'))
+    depends_on('py-six', type=('build', 'run'))

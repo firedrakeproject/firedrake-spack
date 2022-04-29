@@ -18,4 +18,4 @@ class PyPyadjoint(EditablePythonPackage):
 
     version('develop', branch='master', no_cache=True)
 
-    depends_on('py-setuptools', type='build')
+    depends_on('py-setuptools', type=('build', 'run'))

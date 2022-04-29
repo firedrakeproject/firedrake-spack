@@ -18,6 +18,6 @@ class PyPymbolic(PythonPackage):
     version('2019.1', tag='v2019.1')
     version('2017.1', tag='v2017.1')
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-pytools')
-    depends_on('py-six')
+    depends_on('py-setuptools', type=('build', 'run'))
+    depends_on('py-pytools', type=('build', 'run'))
+    depends_on('py-six', type=('build', 'run'))

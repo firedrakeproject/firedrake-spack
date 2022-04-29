@@ -14,4 +14,4 @@ class PyGeojson(PythonPackage):
     version('2.5.0', sha256='6e4bb7ace4226a45d9c8c8b1348b3fc43540658359f93c3f7e03efa9f15f658a')
 
     depends_on('python@3.6:3.9', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
+    depends_on('py-setuptools', , type=('build', 'run'))

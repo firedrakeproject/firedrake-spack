@@ -15,10 +15,10 @@ class PyThetis(EditablePythonPackage):
 
     version('develop', branch='master', no_cache=True)
 
-    depends_on('py-firedrake')
-    depends_on('py-netcdf4')
-    depends_on('py-pyproj')
-    depends_on('py-pytz')
-    depends_on('py-scipy')
-    depends_on('py-setuptools', type='build')
-    depends_on('py-uptide')
+    depends_on('py-firedrake', type=('build', 'run'))
+    depends_on('py-netcdf4', type=('build', 'run'))
+    depends_on('py-pyproj', type=('build', 'run'))
+    depends_on('py-pytz', type=('build', 'run'))
+    depends_on('py-scipy', type=('build', 'run'))
+    depends_on('py-setuptools', type=('build', 'run'))
+    depends_on('py-uptide', type=('build', 'run'))

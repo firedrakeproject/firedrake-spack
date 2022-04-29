@@ -16,10 +16,10 @@ class PyTsfc(EditablePythonPackage):
 
     version('develop', branch='master', no_cache=True)
 
-    depends_on('py-numpy')
+    depends_on('py-numpy', type=('build', 'run'))
 
-    depends_on('firedrake.py-coffee')
-    depends_on('firedrake.py-fiat')
-    depends_on('firedrake.py-finat')
-    depends_on('firedrake.py-ufl')
+    depends_on('firedrake.py-coffee', type=('build', 'run'))
+    depends_on('firedrake.py-fiat', type=('build', 'run'))
+    depends_on('firedrake.py-finat', type=('build', 'run'))
+    depends_on('firedrake.py-ufl', type=('build', 'run'))
 
