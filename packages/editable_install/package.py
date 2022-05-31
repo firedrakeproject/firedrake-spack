@@ -1,6 +1,6 @@
 import inspect
 from spack import *
-from spack.package import PackageBase
+from spack.package_base import PackageBase
 
 
 class EditablePythonPackage(PythonPackage):
