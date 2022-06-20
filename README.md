@@ -33,7 +33,7 @@ development packages. Usage:
 
 To perform the installation above:
 ```bash
-./spack_install_script.sh firedrake %gcc ^mpich ^openblas
+./spack_install_script.sh firedrake py-firedrake %gcc ^mpich ^openblas
 ```
 
 ### Other tested configurations
