@@ -55,7 +55,7 @@ else
   spack develop py-ufl@develop
 
   # Install (and log)
-  #spack install --fail-fast 2>&1 | tee spack-firedrake-install.log
+  spack install --fail-fast 2>&1 | tee spack-firedrake-install.log
 
   # For some reason the environment needs deactivating
   # and activating before it is useable
