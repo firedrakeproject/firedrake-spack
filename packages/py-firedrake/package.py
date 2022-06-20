@@ -89,6 +89,7 @@ class PyFiredrake(EditablePythonPackage):
     depends_on('py-numpy', type=('build', 'run'))
     depends_on('py-numpy ^openblas@:0.3.13', when='openblas', type=('build', 'run'))
     depends_on('py-pkgconfig', type=('build', 'run'))
+    depends_on('py-progress', type=('build', 'run'))
     depends_on('py-requests', type=('build', 'run'))
     depends_on('py-scipy', type=('build', 'run'))
     with when('%intel'):
