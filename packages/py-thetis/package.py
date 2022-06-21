@@ -21,4 +21,5 @@ class PyThetis(EditablePythonPackage):
     depends_on('py-pytz', type=('build', 'run'))
     depends_on('py-scipy', type=('build', 'run'))
     depends_on('py-setuptools', type=('build', 'run'))
+    depends_on('py-traitlets', type=('build', 'run'))
     depends_on('py-uptide', type=('build', 'run'))
