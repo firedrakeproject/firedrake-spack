@@ -160,7 +160,7 @@ class PyFiredrake(EditablePythonPackage):
             # It's difficult to pick out the Intel MPI compilers
             # We do it manually here
             mpi_prefix = Path(self.spec['mpi'].mpicc).parent
-            mpi = MPI('mpiicc', 'mpiicpc', 'mpiifort')
+            mpi = MPI('mpiicc', 'mpiicpc', 'mpiifort', 'mpiexec')
         else:
             mpi_prefix = Path(self.spec['mpi'].prefix.bin)
             mpi = MPI(*fields)

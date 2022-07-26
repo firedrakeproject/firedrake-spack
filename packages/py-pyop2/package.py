@@ -41,7 +41,7 @@ class PyPyop2(EditablePythonPackage):
         if self.spec.satisfies('^intel-oneapi-mpi') or \
             self.spec.satisfies('^intel-mpi'):
             mpi_prefix = Path(self.spec['mpi'].mpicc).parent
-            env['CC'] = mpi_prefix.joinpath('mpiicc')
+            env['CC'] = str(mpi_prefix.joinpath('mpiicc'))
         else:
             env['CC'] = spec['mpi'].mpicc
         super().install(spec, prefix)
