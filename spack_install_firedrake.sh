@@ -27,7 +27,7 @@ then
 else
   # Setup spack environment
   SPACK_ENV=$1
-  SPACK_ENV2=$SPACK_ENV
+  export SPACK_ENV2=$SPACK_ENV
   echo Creating Spack environment in: $SPACK_ENV
   spack env create -d $SPACK_ENV
   spack env activate -p $SPACK_ENV
@@ -55,12 +55,13 @@ else
   spack develop py-tsfc@develop
   spack develop py-ufl@develop
 
-  # Install (and log)
-  spack install --fail-fast 2>&1 | tee spack-firedrake-install.log
+  # Concretize, Install (and log)
+  spack concretize -f 2>&1 | tee $SPACK_ENV/spack-firedrake-conc.log
+  spack install --fail-fast 2>&1 | tee $SPACK_ENV/spack-firedrake-install.log
 
   # For some reason the environment needs deactivating
   # and activating before it is useable
   spack env deactivate
-  spack env activate -p $SPACK_ENV2
+  spack env activate $SPACK_ENV2
 fi
 
