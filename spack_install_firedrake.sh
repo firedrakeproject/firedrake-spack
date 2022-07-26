@@ -27,7 +27,7 @@ then
 else
   # Setup spack environment
   SPACK_ENV=$1
-  export SPACK_ENV2=$SPACK_ENV
+  SPACK_ENV2=$SPACK_ENV
   echo Creating Spack environment in: $SPACK_ENV
   spack env create -d $SPACK_ENV
   spack env activate -p $SPACK_ENV
