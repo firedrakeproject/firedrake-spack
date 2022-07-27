@@ -6,6 +6,7 @@
 from spack import *
 from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
+
 class PyFiat(EditablePythonPackage):
     '''FIAT: FInite element Automatic Tabulator'''
 
@@ -16,5 +17,5 @@ class PyFiat(EditablePythonPackage):
     version('develop', branch='master')
 
     depends_on('py-setuptools', type=('build', 'run'))
-    depends_on('py-numpy', type=('build','run'))
-    depends_on('py-sympy', type=('build','run'))
+    depends_on('py-numpy', type=('build', 'run'))
+    depends_on('py-sympy', type=('build', 'run'))

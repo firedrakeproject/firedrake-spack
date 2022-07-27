@@ -27,4 +27,3 @@ class PyLoopy(EditablePythonPackage):
     depends_on('py-ply', type=('build', 'run'))
 
     depends_on('firedrake.py-pytools', type=('build', 'run'))
-

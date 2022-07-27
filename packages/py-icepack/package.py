@@ -29,4 +29,3 @@ class PyIcepack(EditablePythonPackage):
     depends_on('py-setuptools', type=('build', 'run'))
     depends_on('py-shapely', type=('build', 'run'))
     depends_on('py-tqdm', type=('build', 'run'))
-

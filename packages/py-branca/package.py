@@ -7,7 +7,8 @@ from spack import *
 
 
 class PyBranca(PythonPackage):
-    '''This library is a spinoff from folium, that would host the non-map-specific features.'''
+    '''This library is a spinoff from folium,
+    that would host the non-map-specific features.'''
 
     pypi = 'branca/branca-0.4.2.tar.gz'
 
