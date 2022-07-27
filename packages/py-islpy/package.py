@@ -13,7 +13,7 @@ class PyIslpy(PythonPackage):
     url      = 'https://github.com/inducer/islpy'
     git      = 'https://github.com/inducer/islpy'
 
-    version('develop', branch='main', submodules=True )
+    version('develop', branch='main', submodules=True)
 
     depends_on('py-setuptools', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))

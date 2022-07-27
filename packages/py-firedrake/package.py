@@ -14,6 +14,7 @@ from spack.pkg.firedrake.editable_install import EditablePythonPackage
 fields = ['mpicc', 'mpicxx', 'mpif90', 'mpiexec']
 MPI = namedtuple('MPI', fields)
 
+
 class FiredrakeConfiguration(dict):
     '''A dictionary extended to facilitate the storage of Firedrake
     configuration information.'''
@@ -32,12 +33,15 @@ class FiredrakeConfiguration(dict):
                 if o in args.__dict__.keys():
                     self["options"][o] = args.__dict__[o]
 
-    _persistent_options = ["package_manager",
-                           "minimal_petsc", "mpicc", "mpicxx", "mpif90", "mpiexec", "disable_ssh",
-                           "honour_petsc_dir", "with_parmetis",
-                           "slepc", "packages", "honour_pythonpath",
-                           "opencascade", "tinyasm",
-                           "petsc_int_type", "cache_dir", "complex", "remove_build_files", "with_blas"]
+    _persistent_options = [
+        "package_manager", "minimal_petsc",
+        "mpicc", "mpicxx", "mpif90", "mpiexec",
+        "disable_ssh", "honour_petsc_dir", "with_parmetis",
+        "slepc", "packages", "honour_pythonpath",
+        "opencascade", "tinyasm", "petsc_int_type",
+        "cache_dir", "complex", "remove_build_files",
+        "with_blas"
+    ]
 
 
 class PyFiredrake(EditablePythonPackage):
@@ -156,7 +160,7 @@ class PyFiredrake(EditablePythonPackage):
     def generate_config_file(self):
         config = FiredrakeConfiguration()
         if self.spec.satisfies('^intel-oneapi-mpi') or \
-            self.spec.satisfies('^intel-mpi'):
+                self.spec.satisfies('^intel-mpi'):
             # It's difficult to pick out the Intel MPI compilers
             # We do it manually here
             mpi_prefix = Path(self.spec['mpi'].mpicc).parent
@@ -178,17 +182,20 @@ class PyFiredrake(EditablePythonPackage):
             'opencascade':        False,
             'package_manager':    False,
             'packages':           [],
-            'petsc_int_type':     ('int64' if '+int64' in self.spec['petsc'] else 'int32'),
+            'petsc_int_type':     (
+                'int64' if '+int64' in self.spec['petsc'] else 'int32'
+            ),
             'remove_build_files': False,
             'slepc':              '+slepc' in self.spec,
             'tinyasm':            False,
             'with_blas':          self.spec['blas'].prefix.lib,
             'with_parmetis':      '+parmetis' in self.spec['petsc']
         }
+        string_template = '{}/firedrake_configuration/configuration.json'
         if 'dev_path' in self.spec.variants:
-            config_file = '{}/firedrake_configuration/configuration.json'.format(self.spec.variants['dev_path'].value)
+            config_file = string_template.format(self.spec.variants['dev_path'].value)
         else:
-            config_file = '{}/firedrake_configuration/configuration.json'.format(self.prefix)
+            config_file = string_template.format(self.prefix)
         with open(config_file, 'w') as fh:
             from pprint import pprint
             pprint(json.dumps(config))

@@ -17,4 +17,3 @@ class PyIrksome(EditablePythonPackage):
 
     depends_on('py-firedrake', type=('build', 'run'))
     depends_on('py-setuptools', type=('build', 'run'))
-
