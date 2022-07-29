@@ -57,7 +57,11 @@ else
 
   # Concretize, Install (and log)
   spack concretize -f 2>&1 | tee $SPACK_ENV/spack-firedrake-conc.log
-  spack install --fail-fast 2>&1 | tee $SPACK_ENV/spack-firedrake-install.log
+  spack install -v --fail-fast --show-log-on-error 2>&1 | tee $SPACK_ENV/spack-firedrake-install.log
+  if [ $? -ne 0 ]
+  then
+    cat $SPACK_ENV/petsc/configure.log
+  fi
 
   # For some reason the environment needs deactivating
   # and activating before it is useable

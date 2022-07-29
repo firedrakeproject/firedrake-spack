@@ -105,7 +105,7 @@ class PyFiredrake(EditablePythonPackage):
     depends_on('py-sympy', type=('build', 'run'))
 
     # Optional external dependencies
-    depends_on('slepc', when='+slepc', type=('build', 'link', 'run'))
+    depends_on('firedrake.slepc', when='+slepc', type=('build', 'link', 'run'))
     depends_on('py-slepc4py', when='+slepc', type=('build', 'run'))
 
     # Future external dependencies
