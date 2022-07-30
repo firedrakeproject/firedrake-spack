@@ -128,7 +128,9 @@ class PyFiredrake(EditablePythonPackage):
     depends_on('firedrake.petsc@develop' + minimal + eigen, type=('build', 'link', 'run'))  # (when='minimal-petsc')
     depends_on('firedrake.petsc@develop' + full, when='~minimal-petsc', type=('build', 'link', 'run'))
     depends_on('firedrake.petsc@develop' + real, when='~complex', type=('build', 'link', 'run'))
+    depends_on('firedrake.petsc@develop +complex', when='+complex', type=('build', 'link', 'run'))
     depends_on('firedrake.petsc@develop' + int32, when='~64-bit-indices', type=('build', 'link', 'run'))
+    depends_on('firedrake.petsc@develop + int64', when='+64-bit-indices', type=('build', 'link', 'run'))
 
     depends_on('firedrake.py-fiat', type=('build', 'run'))
     depends_on('firedrake.py-finat', type=('build', 'run'))
