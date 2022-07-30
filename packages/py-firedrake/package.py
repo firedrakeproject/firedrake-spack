@@ -119,10 +119,10 @@ class PyFiredrake(EditablePythonPackage):
     # TODO:
     # --download-pastix missing for full
     # --download-ml missing for real_int32
-    minimal = ' +shared +chaco +hdf5 +mpi +ptscotch +superlu-dist'
+    minimal = ' +shared +hdf5 +mpi +ptscotch +superlu-dist'
     full    = ' +hwloc +metis +netcdf-c +parallel-netcdf +suite-sparse'
     real    = ' +hypre'
-    int32   = ' +mumps +scalapack'
+    int32   = ' +chaco +mumps +scalapack'
     eigen   = ' ^eigen@3.3.3'
 
     depends_on('firedrake.petsc@develop' + minimal + eigen, type=('build', 'link', 'run'))  # (when='minimal-petsc')
