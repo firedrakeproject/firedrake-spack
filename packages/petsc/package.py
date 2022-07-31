@@ -49,7 +49,7 @@ class Petsc(OrigPetsc):
     #   --with-64-bit-indices
     #
 
-    variant('chaco', default=True, description='Activates support for chaco')
+    variant('chaco', default=False, description='Activates support for chaco')
     variant('eigen', default=True, description='Activates support for eigen')
     variant('netcdf-c', default=False, description='Activates support for netcdf')
     variant('parallel-netcdf', default=False, description='Activates support for pnetcdf')
