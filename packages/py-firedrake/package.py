@@ -105,7 +105,7 @@ class PyFiredrake(EditablePythonPackage):
     depends_on('py-sympy', type=('build', 'run'))
 
     # Optional external dependencies
-    depends_on('slepc', when='+slepc', type=('build', 'link', 'run'))
+    depends_on('firedrake.slepc', when='+slepc', type=('build', 'link', 'run'))
     depends_on('py-slepc4py', when='+slepc', type=('build', 'run'))
 
     # Future external dependencies
@@ -119,16 +119,18 @@ class PyFiredrake(EditablePythonPackage):
     # TODO:
     # --download-pastix missing for full
     # --download-ml missing for real_int32
-    minimal = ' +shared +chaco +hdf5 +mpi +ptscotch +superlu-dist'
+    minimal = ' +shared +hdf5 +mpi +ptscotch +superlu-dist'
     full    = ' +hwloc +metis +netcdf-c +parallel-netcdf +suite-sparse'
     real    = ' +hypre'
-    int32   = ' +mumps +scalapack'
+    int32   = ' +chaco +mumps +scalapack'
     eigen   = ' ^eigen@3.3.3'
 
     depends_on('firedrake.petsc@develop' + minimal + eigen, type=('build', 'link', 'run'))  # (when='minimal-petsc')
     depends_on('firedrake.petsc@develop' + full, when='~minimal-petsc', type=('build', 'link', 'run'))
     depends_on('firedrake.petsc@develop' + real, when='~complex', type=('build', 'link', 'run'))
+    depends_on('firedrake.petsc@develop +complex', when='+complex', type=('build', 'link', 'run'))
     depends_on('firedrake.petsc@develop' + int32, when='~64-bit-indices', type=('build', 'link', 'run'))
+    depends_on('firedrake.petsc@develop +int64', when='+64-bit-indices', type=('build', 'link', 'run'))
 
     depends_on('firedrake.py-fiat', type=('build', 'run'))
     depends_on('firedrake.py-finat', type=('build', 'run'))
