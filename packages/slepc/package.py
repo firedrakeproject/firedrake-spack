@@ -8,7 +8,9 @@ class Slepc(OrigSlepc):
 
     version("develop", branch="firedrake", no_cache=True)
 
+    depends_on("firedrake.petsc@develop", when="@develop")
+
     # Some spack bug: https://github.com/spack/spack/issues/27508
     @run_before("install")
     def fixup_bug(self):
-        spack.pkg.builtin.petsc.python = python
+        spack.pkg.builtin.slepc.python = python
