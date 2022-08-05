@@ -12,9 +12,9 @@ class PySlepc4py(PythonPackage):
     """SLEPc Python bindings, Firedrake fork
     """
 
-    homepage = "https://github.com/firedrakeproject/slepc4py"
-    url = "https://github.com/firedrakeproject/slepc4py"
-    git = "https://github.com/firedrakeproject/slepc4py"
+    homepage = "https://github.com/firedrakeproject/slepc"
+    url = "https://github.com/firedrakeproject/slepc"
+    git = "https://github.com/firedrakeproject/slepc"
 
     maintainers = ["JDBettereidge"]
 
@@ -30,3 +30,7 @@ class PySlepc4py(PythonPackage):
 
     depends_on("firedrake.slepc")
     depends_on("firedrake.py-petsc4py", type=("build", "run"))
+
+    @property
+    def build_directory(self):
+        return os.path.join(self.stage.source_path, "src", "binding", "slepc4py")
