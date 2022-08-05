@@ -75,7 +75,7 @@ class Petsc(OrigPetsc):
         options = new_options
         return options
 
-    # Some spack bug
+    # Some spack bug: https://github.com/spack/spack/issues/27508
     @run_before("configure")
     def fixup_bug(self):
         spack.pkg.builtin.petsc.python = python

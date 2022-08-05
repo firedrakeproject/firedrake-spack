@@ -14,7 +14,7 @@ class PyFemlium(PythonPackage):
     homepage = "https://femlium.github.io/"
     git = "https://github.com/FEMlium/FEMlium/"
 
-    version("develop", branch="master", no_cache=True)
+    version("develop", branch="main", no_cache=True)
 
     variant("firedrake", default=True, description="Use the Firedrake backend")
 
