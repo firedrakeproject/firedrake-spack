@@ -7,16 +7,16 @@ from spack import *
 
 
 class PyIslpy(PythonPackage):
-    '''Python wrapper for isl, an integer set library'''
+    """Python wrapper for isl, an integer set library"""
 
-    homepage = 'https://github.com/inducer/islpy'
-    url      = 'https://github.com/inducer/islpy'
-    git      = 'https://github.com/inducer/islpy'
+    homepage = "https://github.com/inducer/islpy"
+    url = "https://github.com/inducer/islpy"
+    git = "https://github.com/inducer/islpy"
 
-    version('develop', branch='main', submodules=True)
+    version("develop", branch="main", submodules=True)
 
-    depends_on('py-setuptools', type=('build', 'run'))
-    depends_on('py-pybind11', type=('build', 'run'))
-    depends_on('py-pytest', type=('build', 'run'))
-    depends_on('py-cffi', type=('build', 'run'))
-    depends_on('py-six', type=('build', 'run'))
+    depends_on("py-setuptools", type=("build", "run"))
+    depends_on("py-pybind11", type=("build", "run"))
+    depends_on("py-pytest", type=("build", "run"))
+    depends_on("py-cffi", type=("build", "run"))
+    depends_on("py-six", type=("build", "run"))

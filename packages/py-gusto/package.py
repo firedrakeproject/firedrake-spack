@@ -8,13 +8,13 @@ from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
 class PyGusto(EditablePythonPackage):
-    '''Three dimensional atmospheric dynamical core using the Gung Ho numerics.'''
+    """Three dimensional atmospheric dynamical core using the Gung Ho numerics."""
 
-    homepage = 'http://firedrakeproject.org/gusto/'
-    git      = 'https://github.com/firedrakeproject/gusto'
+    homepage = "http://firedrakeproject.org/gusto/"
+    git = "https://github.com/firedrakeproject/gusto"
 
-    version('develop', branch='master', no_cache=True)
+    version("develop", branch="master", no_cache=True)
 
-    depends_on('py-firedrake', type=('build', 'run'))
-    depends_on('py-netcdf4', type=('build', 'run'))
-    depends_on('py-setuptools', type=('build', 'run'))
+    depends_on("py-firedrake", type=("build", "run"))
+    depends_on("py-netcdf4", type=("build", "run"))
+    depends_on("py-setuptools", type=("build", "run"))

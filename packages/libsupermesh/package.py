@@ -7,24 +7,24 @@ from spack import *
 
 
 class Libsupermesh(CMakePackage):
-    '''libsupermesh parallel supermeshing library'''
+    """libsupermesh parallel supermeshing library"""
 
-    homepage = 'https://bitbucket.org/libsupermesh/libsupermesh'
-    url      = 'https://bitbucket.org/libsupermesh/libsupermesh'
-    git      = 'https://bitbucket.org/libsupermesh/libsupermesh'
+    homepage = "https://bitbucket.org/libsupermesh/libsupermesh"
+    url = "https://bitbucket.org/libsupermesh/libsupermesh"
+    git = "https://bitbucket.org/libsupermesh/libsupermesh"
 
-    version('develop', branch='master', no_cache=True)
+    version("develop", branch="master", no_cache=True)
 
-    variant('shared', default=True, description='Enable shared library')
+    variant("shared", default=True, description="Enable shared library")
 
-    depends_on('mpi')
+    depends_on("mpi")
 
     # It's not clear at what point the -s flag to the Cray compiler changed
     # if we can identify this we should add version specifiers to cce
-    patch('crayftn.patch', when='%cce')
+    patch("crayftn.patch", when="%cce")
 
     def cmake_args(self):
         args = []
-        if '+shared' in self.spec:
-            args.append('-DBUILD_SHARED_LIBS=ON')
+        if "+shared" in self.spec:
+            args.append("-DBUILD_SHARED_LIBS=ON")
         return args

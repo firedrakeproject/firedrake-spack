@@ -8,17 +8,17 @@ from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
 class PyTsfc(EditablePythonPackage):
-    '''Two-stage form compiler'''
+    """Two-stage form compiler"""
 
-    homepage = 'https://firedrakeproject.org/'
-    url      = 'https://github.com/firedrakeproject/tsfc'
-    git      = 'https://github.com/firedrakeproject/tsfc'
+    homepage = "https://firedrakeproject.org/"
+    url = "https://github.com/firedrakeproject/tsfc"
+    git = "https://github.com/firedrakeproject/tsfc"
 
-    version('develop', branch='master', no_cache=True)
+    version("develop", branch="master", no_cache=True)
 
-    depends_on('py-numpy', type=('build', 'run'))
+    depends_on("py-numpy", type=("build", "run"))
 
-    depends_on('firedrake.py-coffee', type=('build', 'run'))
-    depends_on('firedrake.py-fiat', type=('build', 'run'))
-    depends_on('firedrake.py-finat', type=('build', 'run'))
-    depends_on('firedrake.py-ufl', type=('build', 'run'))
+    depends_on("firedrake.py-coffee", type=("build", "run"))
+    depends_on("firedrake.py-fiat", type=("build", "run"))
+    depends_on("firedrake.py-finat", type=("build", "run"))
+    depends_on("firedrake.py-ufl", type=("build", "run"))

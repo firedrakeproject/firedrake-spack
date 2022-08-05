@@ -8,18 +8,18 @@ from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
 class PyThetis(EditablePythonPackage):
-    '''Finite element flow solver for simulating coastal and estuarine flows.'''
+    """Finite element flow solver for simulating coastal and estuarine flows."""
 
-    homepage = 'https://thetisproject.org/'
-    git      = 'https://github.com/thetisproject/thetis'
+    homepage = "https://thetisproject.org/"
+    git = "https://github.com/thetisproject/thetis"
 
-    version('develop', branch='master', no_cache=True)
+    version("develop", branch="master", no_cache=True)
 
-    depends_on('py-firedrake', type=('build', 'run'))
-    depends_on('py-netcdf4', type=('build', 'run'))
-    depends_on('py-pyproj', type=('build', 'run'))
-    depends_on('py-pytz', type=('build', 'run'))
-    depends_on('py-scipy', type=('build', 'run'))
-    depends_on('py-setuptools', type=('build', 'run'))
-    depends_on('py-traitlets', type=('build', 'run'))
-    depends_on('py-uptide', type=('build', 'run'))
+    depends_on("py-firedrake", type=("build", "run"))
+    depends_on("py-netcdf4", type=("build", "run"))
+    depends_on("py-pyproj", type=("build", "run"))
+    depends_on("py-pytz", type=("build", "run"))
+    depends_on("py-scipy", type=("build", "run"))
+    depends_on("py-setuptools", type=("build", "run"))
+    depends_on("py-traitlets", type=("build", "run"))
+    depends_on("py-uptide", type=("build", "run"))

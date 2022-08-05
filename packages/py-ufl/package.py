@@ -8,14 +8,14 @@ from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
 class PyUfl(EditablePythonPackage):
-    '''UFL - Unified Form Language'''
+    """UFL - Unified Form Language"""
 
-    homepage = 'https://fenicsproject.org/'
-    url      = 'https://github.com/firedrakeproject/ufl'
-    git      = 'https://github.com/firedrakeproject/ufl'
+    homepage = "https://fenicsproject.org/"
+    url = "https://github.com/firedrakeproject/ufl"
+    git = "https://github.com/firedrakeproject/ufl"
 
-    version('develop', branch='master', no_cache=True)
+    version("develop", branch="master", no_cache=True)
 
-    depends_on('py-setuptools', type=('build', 'run'))
-    depends_on('py-numpy', type=('build', 'run'))
-    depends_on('py-six', type=('build', 'run'))
+    depends_on("py-setuptools", type=("build", "run"))
+    depends_on("py-numpy", type=("build", "run"))
+    depends_on("py-six", type=("build", "run"))

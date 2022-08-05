@@ -9,29 +9,29 @@ from spack import *
 
 
 class PyPetsc4py(PythonPackage):
-    '''PETSc, pronounced PET-see (the S is silent), is a suite of data structures
+    """PETSc, pronounced PET-see (the S is silent), is a suite of data structures
     and routines for the scalable (parallel) solution of scientific applications
     modeled by partial differential equations.
-    '''
+    """
 
-    homepage = 'https://www.mcs.anl.gov/petsc/'
-    url      = 'https://github.com/firedrakeproject/petsc'
-    git      = 'https://github.com/firedrakeproject/petsc'
+    homepage = "https://www.mcs.anl.gov/petsc/"
+    url = "https://github.com/firedrakeproject/petsc"
+    git = "https://github.com/firedrakeproject/petsc"
 
-    maintainers = ['connorjward']
+    maintainers = ["connorjward"]
 
-    version('develop', branch='firedrake', no_cache=True)
+    version("develop", branch="firedrake", no_cache=True)
 
-    patch('ldshared-dev.patch')
+    patch("ldshared-dev.patch")
 
-    depends_on('py-cython', type=('build', 'run'))
-    depends_on('python@2.6:2.8,3.3:', type=('build', 'run'))
-    depends_on('py-setuptools', type=('build', 'run'))
-    depends_on('py-numpy', type=('build', 'run'))
-    depends_on('py-mpi4py', type=('build', 'run'))
+    depends_on("py-cython", type=("build", "run"))
+    depends_on("python@2.6:2.8,3.3:", type=("build", "run"))
+    depends_on("py-setuptools", type=("build", "run"))
+    depends_on("py-numpy", type=("build", "run"))
+    depends_on("py-mpi4py", type=("build", "run"))
 
-    depends_on('firedrake.petsc')
+    depends_on("firedrake.petsc")
 
     @property
     def build_directory(self):
-        return os.path.join(self.stage.source_path, 'src', 'binding', 'petsc4py')
+        return os.path.join(self.stage.source_path, "src", "binding", "petsc4py")

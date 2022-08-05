@@ -8,14 +8,14 @@ from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
 class PyPyadjoint(EditablePythonPackage):
-    '''The algorithmic differentation tool pyadjoint and add-ons.'''
+    """The algorithmic differentation tool pyadjoint and add-ons."""
 
-    homepage = 'https://firedrakeproject.org'
-    url      = 'https://github.com/dolfin-adjoint/pyadjoint.git'
-    git      = 'https://github.com/dolfin-adjoint/pyadjoint.git'
+    homepage = "https://firedrakeproject.org"
+    url = "https://github.com/dolfin-adjoint/pyadjoint.git"
+    git = "https://github.com/dolfin-adjoint/pyadjoint.git"
 
-    maintainers = ['connorjward', 'JDBetteridge']
+    maintainers = ["connorjward", "JDBetteridge"]
 
-    version('develop', branch='master', no_cache=True)
+    version("develop", branch="master", no_cache=True)
 
-    depends_on('py-setuptools', type=('build', 'run'))
+    depends_on("py-setuptools", type=("build", "run"))

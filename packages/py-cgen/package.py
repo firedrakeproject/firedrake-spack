@@ -7,17 +7,17 @@ from spack import *
 
 
 class PyCgen(PythonPackage):
-    '''C/C++ source generation from an AST'''
+    """C/C++ source generation from an AST"""
 
-    homepage = 'https://github.com/inducer/cgen'
-    url      = 'https://github.com/inducer/cgen'
-    git      = 'https://github.com/inducer/cgen'
+    homepage = "https://github.com/inducer/cgen"
+    url = "https://github.com/inducer/cgen"
+    git = "https://github.com/inducer/cgen"
 
-    version('develop', branch='main', no_cache=True)
+    version("develop", branch="main", no_cache=True)
 
-    depends_on('py-setuptools', type=('build', 'run'))
-    depends_on('py-pytools', type=('build', 'run'))
-    depends_on('py-numpy', type=('build', 'run'))
-    depends_on('py-six', type=('build', 'run'))
-    depends_on('py-appdirs', type=('build', 'run'))
-    depends_on('py-decorator', type=('build', 'run'))
+    depends_on("py-setuptools", type=("build", "run"))
+    depends_on("py-pytools", type=("build", "run"))
+    depends_on("py-numpy", type=("build", "run"))
+    depends_on("py-six", type=("build", "run"))
+    depends_on("py-appdirs", type=("build", "run"))
+    depends_on("py-decorator", type=("build", "run"))

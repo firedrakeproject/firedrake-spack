@@ -8,10 +8,10 @@ from spack.pkg.builtin.petsc import Petsc as OrigPetsc
 
 
 class Petsc(OrigPetsc):
-    homepage = 'https://github.com/firedrakeproject/petsc.git'
-    git      = 'https://github.com/firedrakeproject/petsc.git'
+    homepage = "https://github.com/firedrakeproject/petsc.git"
+    git = "https://github.com/firedrakeproject/petsc.git"
 
-    version('develop', branch='firedrake', no_cache=True)
+    version("develop", branch="firedrake", no_cache=True)
 
     # Desired variants:
     # [Alphabetical]
@@ -49,31 +49,25 @@ class Petsc(OrigPetsc):
     #   --with-64-bit-indices
     #
 
-    variant('chaco', default=False, description='Activates support for chaco')
-    variant('eigen', default=True, description='Activates support for eigen')
-    variant('netcdf-c', default=False, description='Activates support for netcdf')
-    variant('parallel-netcdf', default=False, description='Activates support for pnetcdf')
-    depends_on('firedrake.chaco@petsc', when='+chaco')
-    depends_on('eigen', when='+eigen')
-    depends_on('netcdf-c+mpi', when='+netcdf-c')
-    depends_on('parallel-netcdf', when='+parallel-netcdf')
+    variant("chaco", default=False, description="Activates support for chaco")
+    variant("eigen", default=True, description="Activates support for eigen")
+    variant("netcdf-c", default=False, description="Activates support for netcdf")
+    variant("parallel-netcdf", default=False, description="Activates support for pnetcdf")
+    depends_on("firedrake.chaco@petsc", when="+chaco")
+    depends_on("eigen", when="+eigen")
+    depends_on("netcdf-c+mpi", when="+netcdf-c")
+    depends_on("parallel-netcdf", when="+parallel-netcdf")
 
     def configure_options(self):
         options = super().configure_options()
-        if '+chaco' in self.spec:
-            options += [
-                '--with-chaco=1',
-                '--with-chaco-dir={}'.format(self.spec['chaco'].prefix)
-            ]
-        if '+eigen' in self.spec:
-            options += [
-                '--with-eigen=1',
-                '--with-eigen-dir={}'.format(self.spec['eigen'].prefix)
-            ]
+        if "+chaco" in self.spec:
+            options += ["--with-chaco=1", "--with-chaco-dir={}".format(self.spec["chaco"].prefix)]
+        if "+eigen" in self.spec:
+            options += ["--with-eigen=1", "--with-eigen-dir={}".format(self.spec["eigen"].prefix)]
         # If 'cflags', 'fflags', and/or 'cxxflags' are set by the compiler
         # remove them from the PETSc configure options. Certain flags
         # cannot be duplicated eg: --eliminate-similar-expr
-        remove_option = ['CFLAGS', 'CXXFLAGS', 'FFLAGS']
+        remove_option = ["CFLAGS", "CXXFLAGS", "FFLAGS"]
         new_options = []
         for opt in options:
             if not any(opt.startswith(rem) for rem in remove_option):
@@ -82,7 +76,7 @@ class Petsc(OrigPetsc):
         return options
 
     # Some spack bug
-    @run_before('configure')
+    @run_before("configure")
     def fixup_bug(self):
         spack.pkg.builtin.petsc.python = python
 

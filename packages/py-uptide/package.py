@@ -7,10 +7,10 @@ from spack import *
 
 
 class PyUptide(PythonPackage):
-    '''python package for tidal calculations'''
+    """python package for tidal calculations"""
 
-    pypi = 'uptide/uptide-1.0.tar.gz'
+    pypi = "uptide/uptide-1.0.tar.gz"
 
-    version('1.0', sha256='ded7fb23bb6daae74fbb2b2a393b73e07036b502ac24947a20f12e47812e1435')
+    version("1.0", sha256="ded7fb23bb6daae74fbb2b2a393b73e07036b502ac24947a20f12e47812e1435")
 
-    depends_on('py-setuptools', type=('build', 'run'))
+    depends_on("py-setuptools", type=("build", "run"))
