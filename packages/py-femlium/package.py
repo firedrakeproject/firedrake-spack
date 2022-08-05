@@ -7,22 +7,22 @@ from spack import *
 
 
 class PyFemlium(PythonPackage):
-    '''Interactive visualization of finite element simulations on geographic
+    """Interactive visualization of finite element simulations on geographic
     maps with folium.
-    '''
+    """
 
-    homepage = 'https://femlium.github.io/'
-    git      = 'https://github.com/FEMlium/FEMlium/'
+    homepage = "https://femlium.github.io/"
+    git = "https://github.com/FEMlium/FEMlium/"
 
-    version('develop', branch='master', no_cache=True)
+    version("develop", branch="master", no_cache=True)
 
-    variant('firedrake', default=True, description='Use the Firedrake backend')
+    variant("firedrake", default=True, description="Use the Firedrake backend")
 
-    depends_on('py-branca', type=('build', 'run'))
-    depends_on('py-firedrake', when='+firedrake', type=('build', 'run'))
-    depends_on('py-folium', type=('build', 'run'))
-    depends_on('py-geojson', type=('build', 'run'))
-    depends_on('py-matplotlib', type=('build', 'run'))
-    depends_on('py-numpy', type=('build', 'run'))
-    depends_on('py-pyproj', type=('build', 'run'))
-    depends_on('py-setuptools', type=('build', 'run'))
+    depends_on("py-branca", type=("build", "run"))
+    depends_on("py-firedrake", when="+firedrake", type=("build", "run"))
+    depends_on("py-folium", type=("build", "run"))
+    depends_on("py-geojson", type=("build", "run"))
+    depends_on("py-matplotlib", type=("build", "run"))
+    depends_on("py-numpy", type=("build", "run"))
+    depends_on("py-pyproj", type=("build", "run"))
+    depends_on("py-setuptools", type=("build", "run"))

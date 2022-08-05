@@ -38,47 +38,48 @@ class Chaco(MakefilePackage):
     """
 
     homepage = "https://www3.cs.stonybrook.edu/~algorith/implement/chaco/implement.shtml"
-    url      = "https://www3.cs.stonybrook.edu/~algorith/implement/chaco/distrib/Chaco-2.2.tar.gz"
+    url = "https://www3.cs.stonybrook.edu/~algorith/implement/chaco/distrib/Chaco-2.2.tar.gz"
 
-    maintainers = ['connorjward']
+    maintainers = ["connorjward"]
 
-    version('petsc', git='https://bitbucket.org/petsc/pkg-chaco.git', branch='master')
-    version('2.2', sha256='e7c1ab187b2dbd4b682da3dbb99097143b773f6b68b39be989442c176e9bcee1')
+    version("petsc", git="https://bitbucket.org/petsc/pkg-chaco.git", branch="master")
+    version("2.2", sha256="e7c1ab187b2dbd4b682da3dbb99097143b773f6b68b39be989442c176e9bcee1")
 
-    build_directory = 'code'
+    build_directory = "code"
 
     def edit(self, spec, prefix):
-        cflags = ['-O2', self.compiler.cc_pic_flag]
+        cflags = ["-O2", self.compiler.cc_pic_flag]
 
-        makefile = FileFilter('{}/Makefile'.format(self.build_directory))
-        makefile.filter(r'^DEST\s*=.*', 'DEST=../bin/chaco')
+        makefile = FileFilter("{}/Makefile".format(self.build_directory))
+        makefile.filter(r"^DEST\s*=.*", "DEST=../bin/chaco")
 
-        if self.spec.version == Version('petsc'):
-            with open('make.inc', 'w') as inc:
-                inc.write('CC={}\n'.format(spack_cc))
-                inc.write('CFLAGS={}\n'.format(' '.join(cflags)))
-                inc.write('OFLAGS={}\n'.format(' '.join(cflags)))
+        if self.spec.version == Version("petsc"):
+            with open("make.inc", "w") as inc:
+                inc.write("CC={}\n".format(spack_cc))
+                inc.write("CFLAGS={}\n".format(" ".join(cflags)))
+                inc.write("OFLAGS={}\n".format(" ".join(cflags)))
         else:
-            makefile.filter(r'^CC\s*=.*', 'CC={}'.format(spack_cc))
-            makefile.filter(r'^CFLAGS\s*=.*', 'CFLAGS={}'.format(cflags))
-            makefile.filter(r'^OFLAGS\s*=.*', 'OFLAGS={}'.format(cflags))
+            makefile.filter(r"^CC\s*=.*", "CC={}".format(spack_cc))
+            makefile.filter(r"^CFLAGS\s*=.*", "CFLAGS={}".format(cflags))
+            makefile.filter(r"^OFLAGS\s*=.*", "OFLAGS={}".format(cflags))
 
     def build(self, spec, prefix):
-        with working_dir('code'):
-            mkdirp('../bin')
+        with working_dir("code"):
+            mkdirp("../bin")
             make()
 
-            if self.spec.version == Version('petsc'):
+            if self.spec.version == Version("petsc"):
                 # See https://gitlab.com/petsc/petsc/-/blob/main/config/BuildSystem/config/packages/Chaco.py
-                mkdirp('../lib')
+                mkdirp("../lib")
                 cwd = Path()
-                object_list = [str(ofile.relative_to(cwd.absolute()))
-                               for ofile in cwd.cwd().glob('*/*.o')]
-                subprocess.run(['ar', 'cr', 'libchaco.a', *object_list], check=True)
-                subprocess.run(['ranlib', 'libchaco.a'], check=True)
-                subprocess.run(['cp', 'libchaco.a', '../lib/'], check=True)
+                object_list = [
+                    str(ofile.relative_to(cwd.absolute())) for ofile in cwd.cwd().glob("*/*.o")
+                ]
+                subprocess.run(["ar", "cr", "libchaco.a", *object_list], check=True)
+                subprocess.run(["ranlib", "libchaco.a"], check=True)
+                subprocess.run(["cp", "libchaco.a", "../lib/"], check=True)
 
     def install(self, spec, prefix):
-        install_tree('bin', prefix.bin)
-        if self.spec.version == Version('petsc'):
-            install_tree('lib', prefix.lib)
+        install_tree("bin", prefix.bin)
+        if self.spec.version == Version("petsc"):
+            install_tree("lib", prefix.lib)

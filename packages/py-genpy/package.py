@@ -7,14 +7,14 @@ from spack import *
 
 
 class PyGenpy(PythonPackage):
-    '''An AST for Python code generation, in Python'''
+    """An AST for Python code generation, in Python"""
 
-    homepage = 'https://github.com/inducer/genpy'
-    url      = 'https://github.com/inducer/genpy'
-    git      = 'https://github.com/inducer/genpy'
+    homepage = "https://github.com/inducer/genpy"
+    url = "https://github.com/inducer/genpy"
+    git = "https://github.com/inducer/genpy"
 
-    version('develop', branch='main')
+    version("develop", branch="main")
 
-    depends_on('py-setuptools', type=('build', 'run'))
-    depends_on('py-pytools', type=('build', 'run'))
-    depends_on('py-numpy', type=('build', 'run'))
+    depends_on("py-setuptools", type=("build", "run"))
+    depends_on("py-pytools", type=("build", "run"))
+    depends_on("py-numpy", type=("build", "run"))

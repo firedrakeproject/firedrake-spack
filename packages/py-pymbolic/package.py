@@ -7,17 +7,17 @@ from spack import *
 
 
 class PyPymbolic(PythonPackage):
-    '''A simple package to do symbolic math (focus on code gen and DSLs)'''
+    """A simple package to do symbolic math (focus on code gen and DSLs)"""
 
-    homepage = 'http://mathema.tician.de/software/pymbolic'
-    url      = 'https://github.com/inducer/pymbolic'
-    git      = 'https://github.com/inducer/pymbolic'
+    homepage = "http://mathema.tician.de/software/pymbolic"
+    url = "https://github.com/inducer/pymbolic"
+    git = "https://github.com/inducer/pymbolic"
 
-    version('develop', branch='main', no_cache=True)
-    version('2019.2', tag='v2019.2')
-    version('2019.1', tag='v2019.1')
-    version('2017.1', tag='v2017.1')
+    version("develop", branch="main", no_cache=True)
+    version("2019.2", tag="v2019.2")
+    version("2019.1", tag="v2019.1")
+    version("2017.1", tag="v2017.1")
 
-    depends_on('py-setuptools', type=('build', 'run'))
-    depends_on('py-pytools', type=('build', 'run'))
-    depends_on('py-six', type=('build', 'run'))
+    depends_on("py-setuptools", type=("build", "run"))
+    depends_on("py-pytools", type=("build", "run"))
+    depends_on("py-six", type=("build", "run"))

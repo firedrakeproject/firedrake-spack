@@ -8,12 +8,12 @@ from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
 class PyIrksome(EditablePythonPackage):
-    '''Solvers for Implicit Runge Kutta methods'''
+    """Solvers for Implicit Runge Kutta methods"""
 
-    homepage = 'https://firedrakeproject.github.io/Irksome/'
-    git      = 'https://github.com/firedrakeproject/Irksome/'
+    homepage = "https://firedrakeproject.github.io/Irksome/"
+    git = "https://github.com/firedrakeproject/Irksome/"
 
-    version('develop', branch='master', no_cache=True)
+    version("develop", branch="master", no_cache=True)
 
-    depends_on('py-firedrake', type=('build', 'run'))
-    depends_on('py-setuptools', type=('build', 'run'))
+    depends_on("py-firedrake", type=("build", "run"))
+    depends_on("py-setuptools", type=("build", "run"))

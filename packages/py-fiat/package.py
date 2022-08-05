@@ -8,14 +8,14 @@ from spack.pkg.firedrake.editable_install import EditablePythonPackage
 
 
 class PyFiat(EditablePythonPackage):
-    '''FIAT: FInite element Automatic Tabulator'''
+    """FIAT: FInite element Automatic Tabulator"""
 
-    homepage = 'https://fenicsproject.org/'
-    url      = 'https://github.com/firedrakeproject/fiat'
-    git      = 'https://github.com/firedrakeproject/fiat'
+    homepage = "https://fenicsproject.org/"
+    url = "https://github.com/firedrakeproject/fiat"
+    git = "https://github.com/firedrakeproject/fiat"
 
-    version('develop', branch='master')
+    version("develop", branch="master")
 
-    depends_on('py-setuptools', type=('build', 'run'))
-    depends_on('py-numpy', type=('build', 'run'))
-    depends_on('py-sympy', type=('build', 'run'))
+    depends_on("py-setuptools", type=("build", "run"))
+    depends_on("py-numpy", type=("build", "run"))
+    depends_on("py-sympy", type=("build", "run"))
