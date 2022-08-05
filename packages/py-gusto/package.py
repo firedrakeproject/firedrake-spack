@@ -13,7 +13,7 @@ class PyGusto(EditablePythonPackage):
     homepage = "http://firedrakeproject.org/gusto/"
     git = "https://github.com/firedrakeproject/gusto"
 
-    version("develop", branch="master", no_cache=True)
+    version("develop", branch="main", no_cache=True)
 
     depends_on("py-firedrake", type=("build", "run"))
     depends_on("py-netcdf4", type=("build", "run"))
