@@ -10,6 +10,7 @@ class PyFolium(PythonPackage):
     """Python Data. Leaflet.js Maps."""
 
     homepage = "https://python-visualization.github.io/folium/"
+    url = "https://github.com/python-visualization/folium/"
     git = "https://github.com/python-visualization/folium/"
 
     version("0.12.1", sha256="3e0cb5bc1817db67ff216af3875a45b50b453c1ae9adf5c4b610413a91b3e1cc")
