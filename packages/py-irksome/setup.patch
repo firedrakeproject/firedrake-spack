@@ -1,0 +1,19 @@
+diff --git a/setup.py b/setup.py
+index 725fae9..3db3ec4 100644
+--- a/setup.py
++++ b/setup.py
+@@ -1,14 +1,6 @@
+ import sys
+ from setuptools import setup
+
+-if "clean" in sys.argv[1:]:
+-    pass
+-else:
+-    try:
+-        import firedrake # noqa
+-    except ImportError:
+-        raise Exception("Firedrake needs to be installed and activated. "
+-                        "Please visit firedrakeproject.org")
+ setup(
+     name='IRKsome',
+     version='0.0.1',

@@ -10,9 +10,10 @@ class PyFolium(PythonPackage):
     """Python Data. Leaflet.js Maps."""
 
     homepage = "https://python-visualization.github.io/folium/"
+    url = "https://github.com/python-visualization/folium/archive/refs/tags/v0.12.1.post1.tar.gz"
     git = "https://github.com/python-visualization/folium/"
 
-    version("0.12.1", sha256="3e0cb5bc1817db67ff216af3875a45b50b453c1ae9adf5c4b610413a91b3e1cc")
+    version("0.12.1", sha256="6b2e29d62ea6499c9b25150781e759924de1862d7c5c7dc0376cf1b43a8c71b8")
 
     depends_on("python@3.5:", type=("build", "run"))
     depends_on("py-branca", type=("build", "run"))
