@@ -15,5 +15,7 @@ class PyIrksome(EditablePythonPackage):
 
     version("develop", branch="master", no_cache=True)
 
+    patch("setup.patch")
+
     depends_on("py-firedrake", type=("build", "run"))
-    depends_on("py-setuptools", type=("build", "run"))
+    depends_on("py-setuptools", type=("build", "link", "run"))
