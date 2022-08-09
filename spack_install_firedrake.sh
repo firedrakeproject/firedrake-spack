@@ -31,6 +31,8 @@ else
   echo Creating Spack environment in: $SPACK_ENV
   spack env create -d $SPACK_ENV
   spack env activate -p $SPACK_ENV
+  # This forces Spack to reuse the same packages for future packages
+  spack -e $SPACK_ENV config add concretizer:unify:true
 
   shift 1
   echo Adding spec: $@
