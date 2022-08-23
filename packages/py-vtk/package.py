@@ -22,6 +22,7 @@ class PyVtk(CMakePackage):
 
     depends_on("python@3.6:", type=("build", "run"))
     depends_on("py-pip", type="build")
+    depends_on("py-setuptools@:62.0.0", type="build")
     depends_on("ninja", type="build")
 
     variant("build_type", default="Release", description="CMake build type")
