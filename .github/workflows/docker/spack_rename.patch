@@ -1,0 +1,13 @@
+diff --git a/lib/spack/llnl/util/filesystem.py b/lib/spack/llnl/util/filesystem.py
+index 8a420756ef..19e7aa6446 100644
+--- a/lib/spack/llnl/util/filesystem.py
++++ b/lib/spack/llnl/util/filesystem.py
+@@ -863,7 +863,7 @@ def replace_directory_transaction(directory_name):
+     # We have to jump through hoops to support Windows, since
+     # os.rename(directory_name, tmpdir) errors there.
+     backup_dir = os.path.join(tmpdir, "backup")
+-    os.rename(directory_name, backup_dir)
++    shutil.move(directory_name, backup_dir)
+     tty.debug("Directory moved [src={0}, dest={1}]".format(directory_name, backup_dir))
+ 
+     try:
