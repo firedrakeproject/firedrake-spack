@@ -154,7 +154,7 @@ class PyFiredrake(EditablePythonPackage):
     # Test dependencies
     depends_on("py-pytest", type="test")
     depends_on("py-pytest-xdist", type="test")
-    # ~ depends_on('py-nbval', type='test')  # Package doesn't yet exist
+    depends_on("py-nbval", type="test")
 
     phases = ["install"]
 
