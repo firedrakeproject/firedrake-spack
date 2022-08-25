@@ -152,9 +152,9 @@ class PyFiredrake(EditablePythonPackage):
     depends_on("firedrake.py-vtk", type=("build", "run"))
 
     # Test dependencies
-    depends_on("py-pytest", type="test")
-    depends_on("py-pytest-xdist", type="test")
-    depends_on("py-nbval", type="test")
+    depends_on("py-pytest", type=("run", "test"))
+    depends_on("py-pytest-xdist", type=("run", "test"))
+    depends_on("py-nbval", type=("run", "test"))
 
     phases = ["install"]
 
