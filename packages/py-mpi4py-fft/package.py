@@ -28,5 +28,5 @@ class PyMpi4pyFft(PythonPackage):
 
     # really we depend on FFTW, but this is built with PETSc
     #   PETSc needs to set the environment variables FFTW_{INCLUDE,LIBRARY}_DIR
-    depends_on("firedrake.petsc", type=("build", "run"))
+    depends_on("fftw", type=("build", "run"))
 
