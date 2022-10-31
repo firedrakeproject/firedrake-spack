@@ -1,0 +1,29 @@
+name: Run lint
+
+on:
+  # Push to master or PR
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  linter:
+    name: "Run linter"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Checkout Spack devel
+        uses: actions/checkout@v3
+        with:
+          repository: spack/spack
+          path: spack
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Lint
+        run: |
+          pip install flake8
+          flake8 --config $GITHUB_WORKSPACE/spack/.flake8 --exclude ./spack --per-file-ignores $GITHUB_WORKSPACE/packages/*/package.py:F403,F405,F821
+        shell: bash
