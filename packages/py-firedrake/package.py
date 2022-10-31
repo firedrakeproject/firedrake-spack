@@ -3,13 +3,15 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import glob
 import json
 import os
-
 from collections import namedtuple
 from pathlib import Path
+
 from spack import *
 from spack.pkg.firedrake.editable_install import EditablePythonPackage
+from spack.util.executable import which
 
 fields = ["mpicc", "mpicxx", "mpif90", "mpiexec"]
 MPI = namedtuple("MPI", fields)
@@ -203,12 +205,24 @@ class PyFiredrake(EditablePythonPackage):
         if "dev_path" in self.spec.variants:
             config_file = string_template.format(self.spec.variants["dev_path"].value)
         else:
-            config_file = string_template.format(self.prefix)
+            config_file = string_template.format(self.build_directory)
+
         with open(config_file, "w") as fh:
             from pprint import pprint
 
             pprint(json.dumps(config))
             json.dump(config, fh)
+
+    @run_after("install")
+    def copy_configure(self):
+        if "dev_path" not in self.spec.variants:
+            _dst_path = glob.glob(os.path.join(self.prefix, "lib", "python*", "site-packages"))
+            assert len(_dst_path) > 0
+            string_template = "{}/firedrake_configuration/configuration.json"
+            src_config_file = string_template.format(self.build_directory)
+            dst_config_file = string_template.format(_dst_path[0])
+            cp = which("cp")
+            cp(src_config_file, dst_config_file)
 
     def setup_run_environment(self, env):
         super().setup_run_environment(env)
