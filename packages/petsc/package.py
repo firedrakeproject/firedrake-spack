@@ -82,3 +82,7 @@ class Petsc(OrigPetsc):
 
     def setup_dependent_run_environment(self, env, dependent_spec):
         self.setup_run_environment(env)
+
+    #def setup_dependent_build_environment(self, env, dependent_spec):
+    #    env.set("FFTW_INCLUDE_DIR", self.prefix.inc)
+    #    env.set("FFTW_LIBRARY_DIR", self.prefix.lib)
