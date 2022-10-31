@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - setup_ci
+      - main
   # Schedule only
   #~ schedule:
     #~ - cron: '0 0 * * 0'
