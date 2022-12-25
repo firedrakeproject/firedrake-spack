@@ -12,6 +12,8 @@ class Petsc(OrigPetsc):
     git = "https://github.com/firedrakeproject/petsc.git"
 
     version("develop", branch="firedrake", no_cache=True)
+    # Git repository needs sowing to build Fortran interface
+    depends_on("sowing", when="@develop")
 
     # Desired variants:
     # [Alphabetical]
