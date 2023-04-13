@@ -1,0 +1,63 @@
+# DockerFile for Firedrake installed using Spack and AMD compilers
+
+FROM firedrakeproject/firedrake-spack-env:latest
+
+# This DockerFile is looked after by
+MAINTAINER Jack Betteridge <j.betteridge@imperial.ac.uk>
+
+USER firedrake
+WORKDIR /home/firedrake
+
+# Add Firedrake repo
+RUN git clone https://github.com/firedrakeproject/firedrake-spack.git \
+    && cd firedrake-spack \
+    && git checkout -b setup_ci origin/setup_ci
+RUN bash -c "source spack/share/spack/setup-env.sh; \
+    spack repo add firedrake-spack"
+# Install and configure AMD compiler
+RUN bash -c 'source spack/share/spack/setup-env.sh; \
+    mkdir -p spack/etc/spack/licenses/aocc; \
+    curl https://developer.amd.com/wordpress/media/files/AOCC_EULA.pdf -o spack/etc/spack/licenses/aocc/AOCC_EULA.pdf; \
+    spack install aocc +license-agreed; \
+    spack load aocc; \
+    spack compiler find \
+    '
+# Install Firedrake
+RUN bash -c 'source spack/share/spack/setup-env.sh; \
+    ./firedrake-spack/spack_install_firedrake.sh firedrake py-firedrake@develop \
+        %aocc \
+        +slepc \
+        ^python@3.10: \
+        ^mpich \
+        ^amdblis \
+        ^amdlibflame \
+        ^amdscalapack \
+        ^firedrake.petsc@develop+fftw cflags=\"-O3 -march=native -mtune=native\" cxxflags=\"-O3 -march=native -mtune=native\" fflags=\"-O3 -march=native -mtune=native\" \
+    '
+# Basic functionality test
+RUN bash -c 'source spack/share/spack/setup-env.sh; \
+    spack env activate firedrake; \
+    python -c "from firedrake import *"; \
+    cd firedrake/py-firedrake; \
+    pytest tests/regression/ -v -k "poisson_strong or stokes_mini or dg_advection" \
+   '
+# Install Firedrake applications
+RUN bash -c 'source spack/share/spack/setup-env.sh; \
+    spack env activate firedrake; \
+    spack develop py-femlium@develop; spack add py-femlium@develop ^python@3.10:; \
+    spack develop py-gusto@develop;   spack add py-gusto@develop ^python@3.10:; \
+    spack develop py-icepack@develop; spack add py-icepack@develop ^python@3.10:; \
+    spack develop py-irksome@develop; spack add py-irksome@develop ^python@3.10:; \
+    spack develop py-thetis@develop;  spack add py-thetis@develop ^python@3.10:; \
+    spack develop py-tinyasm@develop; spack add py-tinyasm@develop ^python@3.10:; \
+    spack install --fail-fast --show-log-on-error; \
+    '
+# Full test suite
+RUN bash -c 'source spack/share/spack/setup-env.sh; \
+    spack env activate firedrake; \
+    echo OMP_NUM_THREADS is $OMP_NUM_THREADS; \
+    echo OPENBLAS_NUM_THREADS is $OPENBLAS_NUM_THREADS; \
+    python -c "from firedrake import *"; \
+    cd firedrake/py-firedrake; \
+    pytest -v -n 12 --durations=200 --cov firedrake --timeout=1800 tests \
+   '

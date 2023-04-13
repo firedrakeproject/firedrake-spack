@@ -1,5 +1,6 @@
 import inspect
 from spack import *
+from spack.build_systems.python import PythonPipBuilder
 from spack.package_base import PackageBase
 
 
@@ -8,7 +9,7 @@ class EditablePythonPackage(PythonPackage):
         """Perform an editable install if `spack develop package` has been run."""
         with working_dir(self.build_directory):
             if "dev_path" in self.spec.variants:
-                args = PythonPackage._std_args(self)
+                args = PythonPipBuilder.std_args(self)
                 args += ["--prefix=" + prefix]
                 args += ["-e", self.spec.variants["dev_path"].value]
                 pip = inspect.getmodule(self).pip

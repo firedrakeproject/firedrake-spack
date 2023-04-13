@@ -1,0 +1,36 @@
+name: Build AOCC
+
+on:
+  push:
+    branches:
+      - setup_ci
+      - main
+  # Schedule only
+  #~ schedule:
+    #~ - cron: '0 0 * * 0'
+
+jobs:
+  spack_env:
+    if: false
+    uses: ./.github/workflows/env.yaml
+    secrets:
+      DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  aocc:
+    name: "Spack install Firedrake inside container using AOCC"
+    needs: spack_env
+    runs-on: self-hosted
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          driver-opts: env.BUILDKIT_STEP_LOG_MAX_SIZE=10485760,env.BUILDKIT_STEP_LOG_MAX_SPEED=-1
+      - name: Build firedrake-spack-aocc
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          file: .github/workflows/docker/Dockerfile.aocc
+          tags: firedrakeproject/firedrake-spack-aocc:latest
