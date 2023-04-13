@@ -11,7 +11,7 @@ class Petsc(OrigPetsc):
     homepage = "https://github.com/firedrakeproject/petsc.git"
     git = "https://github.com/firedrakeproject/petsc.git"
 
-    version("develop", branch="firedrake", no_cache=True)
+    version("develop", branch="pbrubeck/fix/cholesky", no_cache=True)
 
     # Desired variants:
     # [Alphabetical]
