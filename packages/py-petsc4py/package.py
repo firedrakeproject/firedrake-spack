@@ -20,7 +20,7 @@ class PyPetsc4py(PythonPackage):
 
     maintainers = ["connorjward"]
 
-    version("develop", branch="pbrubeck/fix/cholesky", no_cache=True)
+    version("develop", branch="firedrake", no_cache=True)
 
     patch("ldshared-dev.patch")
 

@@ -14,7 +14,7 @@ class PyTsfc(EditablePythonPackage):
     url = "https://github.com/firedrakeproject/tsfc"
     git = "https://github.com/firedrakeproject/tsfc"
 
-    version("develop", branch="pbrubeck/fdm-discontinuous", no_cache=True)
+    version("develop", branch="master", no_cache=True)
 
     depends_on("py-numpy", type=("build", "run"))
 

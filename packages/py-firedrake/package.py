@@ -66,7 +66,7 @@ class PyFiredrake(EditablePythonPackage):
 
     maintainers = ["connorjward", "JDBetteridge"]
 
-    version("develop", branch="pbrubeck/fdm-scpc", get_full_repo=True, no_cache=True)
+    version("develop", branch="master", get_full_repo=True, no_cache=True)
 
     # Variants
     variant(
