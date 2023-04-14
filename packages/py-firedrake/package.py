@@ -204,7 +204,11 @@ class PyFiredrake(EditablePythonPackage):
             config_file = string_template.format(self.spec.variants["dev_path"].value)
         else:
             config_file = string_template.format(self.prefix)
-        with open(config_file, "w") as fh:
+
+        config_path = config_file[:config_file.rfind("/")]
+        if not os.path.exists(config_path):
+            os.makedirs(config_path)
+        with open(config_file, "w+") as fh:
             from pprint import pprint
 
             pprint(json.dumps(config))
