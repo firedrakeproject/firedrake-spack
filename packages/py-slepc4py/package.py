@@ -20,8 +20,6 @@ class PySlepc4py(PythonPackage):
 
     version("develop", branch="firedrake", no_cache=True)
 
-    patch("ldshared-dev.patch")
-
     depends_on("py-cython", type=("build", "run"))
     depends_on("python@3.6:", type=("build", "run"))
     depends_on("py-setuptools", type=("build", "run"))
