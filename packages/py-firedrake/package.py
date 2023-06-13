@@ -82,7 +82,6 @@ class PyFiredrake(EditablePythonPackage):
     depends_on("python@3.6:3.10", type=("build", "link", "run"))
 
     # External dependencies
-    depends_on("eigen@3.3.3", type=("build", "link", "run"))
     depends_on("libspatialindex", type=("build", "link", "run"))
     depends_on("mpi", type=("build", "link", "run"))
     depends_on("py-pip", type=("build", "run"))
@@ -124,10 +123,9 @@ class PyFiredrake(EditablePythonPackage):
     full = " +hwloc +metis +netcdf-c +parallel-netcdf +suite-sparse"
     real = " +hypre"
     int32 = " +chaco +mumps +scalapack"
-    eigen = " ^eigen@3.3.3"
 
     depends_on(
-        "firedrake.petsc@develop" + minimal + eigen, type=("build", "link", "run")
+        "firedrake.petsc@develop" + minimal, type=("build", "link", "run")
     )  # (when='minimal-petsc')
     depends_on(
         "firedrake.petsc@develop" + full, when="~minimal-petsc", type=("build", "link", "run")

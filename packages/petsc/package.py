@@ -24,7 +24,6 @@ class Petsc(OrigPetsc):
     # --minimal:
     #   --download-blas + lapack (!)
     #   --download-chaco (32bit)
-    #   --download-eigen=/path/eigen-3.3.3.tgz (*)
     #   --download-hdf5
     #   --download-hypre (REAL)
     #   --download-mpich
@@ -50,11 +49,9 @@ class Petsc(OrigPetsc):
     #
 
     variant("chaco", default=False, description="Activates support for chaco")
-    variant("eigen", default=True, description="Activates support for eigen")
     variant("netcdf-c", default=False, description="Activates support for netcdf")
     variant("parallel-netcdf", default=False, description="Activates support for pnetcdf")
     depends_on("firedrake.chaco@petsc", when="+chaco")
-    depends_on("eigen", when="+eigen")
     depends_on("netcdf-c+mpi", when="+netcdf-c")
     depends_on("parallel-netcdf", when="+parallel-netcdf")
 
@@ -62,8 +59,6 @@ class Petsc(OrigPetsc):
         options = super().configure_options()
         if "+chaco" in self.spec:
             options += ["--with-chaco=1", "--with-chaco-dir={}".format(self.spec["chaco"].prefix)]
-        if "+eigen" in self.spec:
-            options += ["--with-eigen=1", "--with-eigen-dir={}".format(self.spec["eigen"].prefix)]
         # If 'cflags', 'fflags', and/or 'cxxflags' are set by the compiler
         # remove them from the PETSc configure options. Certain flags
         # cannot be duplicated eg: --eliminate-similar-expr
