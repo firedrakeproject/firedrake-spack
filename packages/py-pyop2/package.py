@@ -31,7 +31,6 @@ class PyPyop2(EditablePythonPackage):
 
     depends_on("firedrake.petsc", type=("build", "link", "run"))
     depends_on("firedrake.py-petsc4py", type=("build", "run"))
-    depends_on("firedrake.py-coffee", type=("build", "run"))
     depends_on("firedrake.py-loopy", type=("build", "run"))
 
     def install(self, spec, prefix):
