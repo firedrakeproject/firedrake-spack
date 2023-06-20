@@ -79,7 +79,7 @@ class PyFiredrake(EditablePythonPackage):
     variant("slepc", default=False, description="Install SLEPc and slepc4py")
 
     # Compatible Python versions
-    depends_on("python@3.6:3.10", type=("build", "link", "run"))
+    depends_on("python@3.8:", type=("build", "link", "run"))
 
     # External dependencies
     depends_on("libspatialindex", type=("build", "link", "run"))
@@ -144,6 +144,7 @@ class PyFiredrake(EditablePythonPackage):
     depends_on("firedrake.py-petsc4py", type=("build", "run"))
     depends_on("firedrake.py-pyadjoint", type=("build", "run"))
     depends_on("firedrake.py-pyop2", type=("build", "run"))
+    depends_on("firedrake.py-pytest-mpi", type=("build", "run", "test"))
     depends_on("firedrake.py-tsfc", type=("build", "run"))
     depends_on("firedrake.py-ufl", type=("build", "run"))
     # VTK is a pain to build in Spack so we build a minimal wheel locally
