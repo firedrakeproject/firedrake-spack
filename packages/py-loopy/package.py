@@ -23,6 +23,7 @@ class PyLoopy(EditablePythonPackage):
     depends_on("py-codepy", type=("build", "run"))
     depends_on("py-mako", type=("build", "run"))
     depends_on("py-islpy", type=("build", "run"))
+    depends_on("py-immutables", type=("build", "run"))
     depends_on("py-pyrsistent", type=("build", "run"))
     depends_on("py-ply", type=("build", "run"))
 
