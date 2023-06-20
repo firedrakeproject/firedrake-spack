@@ -49,9 +49,8 @@ else
   spack develop py-petsc4py@develop
   spack develop py-pyadjoint@develop
   spack develop py-pyop2@develop
+  spack develop py-pytest-mpi@develop
   spack develop py-loopy@develop
-  spack develop py-cgen@develop
-  spack develop py-codepy@develop
   spack develop py-genpy@develop
   spack develop py-tsfc@develop
   spack develop py-ufl@develop
